@@ -1,1 +1,1896 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AstroPhysics Mastery — TÜBİTAK 33. Olimpiyat</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Exo+2:wght@300;400;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.min.js"></script>
+<style>
+:root {
+  --bg-deep: #03050f;
+  --bg-card: #080d1e;
+  --bg-panel: #0d1530;
+  --accent-cyan: #00e5ff;
+  --accent-gold: #ffd600;
+  --accent-purple: #7c4dff;
+  --accent-green: #00e676;
+  --accent-red: #ff1744;
+  --text-primary: #e8eaf6;
+  --text-secondary: #90a4ae;
+  --text-dim: #546e7a;
+  --border: rgba(0,229,255,0.15);
+  --glow-cyan: 0 0 20px rgba(0,229,255,0.4);
+  --glow-gold: 0 0 20px rgba(255,214,0,0.4);
+}
 
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Exo 2', sans-serif;
+  background: var(--bg-deep);
+  color: var(--text-primary);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* Star background */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-image: 
+    radial-gradient(1px 1px at 10% 15%, rgba(255,255,255,0.8) 0%, transparent 100%),
+    radial-gradient(1px 1px at 25% 40%, rgba(255,255,255,0.6) 0%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 50% 20%, rgba(0,229,255,0.7) 0%, transparent 100%),
+    radial-gradient(1px 1px at 70% 60%, rgba(255,255,255,0.5) 0%, transparent 100%),
+    radial-gradient(1px 1px at 85% 30%, rgba(255,214,0,0.6) 0%, transparent 100%),
+    radial-gradient(1px 1px at 35% 75%, rgba(255,255,255,0.4) 0%, transparent 100%),
+    radial-gradient(1px 1px at 60% 85%, rgba(124,77,255,0.6) 0%, transparent 100%),
+    radial-gradient(1px 1px at 90% 10%, rgba(255,255,255,0.7) 0%, transparent 100%),
+    radial-gradient(1px 1px at 15% 55%, rgba(255,255,255,0.5) 0%, transparent 100%),
+    radial-gradient(1px 1px at 45% 90%, rgba(0,230,118,0.5) 0%, transparent 100%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ===== HEADER ===== */
+#header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: rgba(3,5,15,0.95);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  padding: 0 2rem;
+}
+
+.header-inner {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 64px;
+}
+
+.logo {
+  font-family: 'Orbitron', monospace;
+  font-size: 1.1rem;
+  font-weight: 900;
+  color: var(--accent-cyan);
+  text-shadow: var(--glow-cyan);
+  letter-spacing: 2px;
+}
+.logo span { color: var(--accent-gold); }
+
+.score-badge {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.score-display {
+  font-family: 'Orbitron', monospace;
+  font-size: 0.85rem;
+  color: var(--accent-gold);
+  border: 1px solid var(--accent-gold);
+  padding: 0.3rem 0.8rem;
+  border-radius: 4px;
+  text-shadow: var(--glow-gold);
+}
+
+.progress-ring {
+  width: 44px;
+  height: 44px;
+}
+
+/* ===== LAYOUT ===== */
+.app-layout {
+  display: flex;
+  max-width: 1400px;
+  margin: 0 auto;
+  gap: 0;
+  min-height: calc(100vh - 64px);
+  position: relative;
+  z-index: 1;
+}
+
+/* ===== SIDEBAR ===== */
+#sidebar {
+  width: 260px;
+  min-width: 260px;
+  background: rgba(8,13,30,0.9);
+  border-right: 1px solid var(--border);
+  padding: 1.5rem 0;
+  position: sticky;
+  top: 64px;
+  height: calc(100vh - 64px);
+  overflow-y: auto;
+  transition: width 0.3s;
+}
+
+#sidebar::-webkit-scrollbar { width: 4px; }
+#sidebar::-webkit-scrollbar-track { background: transparent; }
+#sidebar::-webkit-scrollbar-thumb { background: var(--accent-cyan); border-radius: 2px; }
+
+.sidebar-section {
+  padding: 0 1rem 1rem;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 1rem;
+}
+
+.sidebar-title {
+  font-family: 'Orbitron', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 3px;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  margin-bottom: 0.8rem;
+  padding: 0 0.5rem;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  padding: 0.6rem 0.8rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  border: 1px solid transparent;
+}
+.nav-item:hover { background: var(--bg-panel); color: var(--text-primary); border-color: var(--border); }
+.nav-item.active { background: rgba(0,229,255,0.1); color: var(--accent-cyan); border-color: rgba(0,229,255,0.3); }
+.nav-icon { font-size: 1rem; min-width: 20px; text-align: center; }
+
+.constants-box {
+  background: var(--bg-panel);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0.8rem;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.65rem;
+  color: var(--text-secondary);
+  line-height: 1.8;
+}
+.constants-box .const-label { color: var(--accent-cyan); }
+.constants-box .const-val { color: var(--accent-gold); }
+
+/* ===== MAIN ===== */
+#main {
+  flex: 1;
+  padding: 2rem;
+  overflow-y: auto;
+}
+
+/* ===== PAGES ===== */
+.page { display: none; }
+.page.active { display: block; animation: fadeIn 0.4s ease; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+
+/* ===== SECTION HEADERS ===== */
+.section-header {
+  margin-bottom: 2rem;
+}
+
+.section-badge {
+  display: inline-block;
+  font-family: 'Orbitron', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 3px;
+  color: var(--accent-gold);
+  text-transform: uppercase;
+  border: 1px solid var(--accent-gold);
+  padding: 0.2rem 0.6rem;
+  border-radius: 2px;
+  margin-bottom: 0.8rem;
+}
+
+.section-title {
+  font-family: 'Orbitron', monospace;
+  font-size: 1.8rem;
+  font-weight: 900;
+  color: var(--text-primary);
+  line-height: 1.2;
+}
+.section-title span { color: var(--accent-cyan); text-shadow: var(--glow-cyan); }
+
+.section-desc {
+  color: var(--text-secondary);
+  margin-top: 0.6rem;
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+/* ===== CARDS ===== */
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+.card:hover { border-color: rgba(0,229,255,0.3); box-shadow: 0 4px 30px rgba(0,229,255,0.08); }
+
+.card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.card-title {
+  font-family: 'Orbitron', monospace;
+  font-size: 0.9rem;
+  color: var(--accent-cyan);
+  font-weight: 700;
+}
+
+.card-tag {
+  font-size: 0.7rem;
+  padding: 0.2rem 0.6rem;
+  border-radius: 3px;
+  font-family: 'Space Mono', monospace;
+}
+.tag-physics { background: rgba(124,77,255,0.2); color: #b39ddb; border: 1px solid rgba(124,77,255,0.4); }
+.tag-astro { background: rgba(0,229,255,0.1); color: var(--accent-cyan); border: 1px solid rgba(0,229,255,0.3); }
+.tag-mech { background: rgba(255,214,0,0.1); color: var(--accent-gold); border: 1px solid rgba(255,214,0,0.3); }
+.tag-optics { background: rgba(0,230,118,0.1); color: var(--accent-green); border: 1px solid rgba(0,230,118,0.3); }
+.tag-thermo { background: rgba(255,23,68,0.1); color: #ff6090; border: 1px solid rgba(255,23,68,0.3); }
+
+/* ===== THEORY BOX ===== */
+.theory-box {
+  background: linear-gradient(135deg, rgba(0,229,255,0.05), rgba(124,77,255,0.05));
+  border: 1px solid rgba(0,229,255,0.2);
+  border-left: 3px solid var(--accent-cyan);
+  border-radius: 8px;
+  padding: 1.2rem 1.5rem;
+  margin-bottom: 1.2rem;
+}
+
+.theory-title {
+  font-family: 'Orbitron', monospace;
+  font-size: 0.75rem;
+  letter-spacing: 2px;
+  color: var(--accent-cyan);
+  text-transform: uppercase;
+  margin-bottom: 0.6rem;
+}
+
+.formula-block {
+  background: rgba(0,0,0,0.4);
+  border: 1px solid rgba(0,229,255,0.15);
+  border-radius: 6px;
+  padding: 1rem;
+  margin: 0.8rem 0;
+  text-align: center;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.9rem;
+  color: var(--accent-gold);
+}
+
+.step-block {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  align-items: flex-start;
+}
+.step-num {
+  min-width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--accent-cyan);
+  color: var(--bg-deep);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Orbitron', monospace;
+  font-size: 0.7rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+.step-content { flex: 1; padding-top: 0.1rem; line-height: 1.6; font-size: 0.9rem; }
+.step-content strong { color: var(--accent-cyan); }
+
+/* ===== QUIZ SYSTEM ===== */
+.quiz-container {
+  margin-bottom: 2rem;
+}
+
+.quiz-question-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.2rem;
+}
+
+.quiz-num {
+  font-family: 'Orbitron', monospace;
+  font-size: 1.5rem;
+  font-weight: 900;
+  color: var(--accent-gold);
+  min-width: 40px;
+}
+
+.quiz-text {
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: var(--text-primary);
+  flex: 1;
+}
+
+.quiz-options {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.7rem;
+  margin-bottom: 1rem;
+}
+
+@media (max-width: 700px) { .quiz-options { grid-template-columns: 1fr; } }
+
+.quiz-option {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  padding: 0.8rem 1rem;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 0.88rem;
+  background: var(--bg-panel);
+  text-align: left;
+}
+.quiz-option:hover:not(.disabled) { border-color: var(--accent-cyan); background: rgba(0,229,255,0.05); }
+.quiz-option .opt-letter {
+  width: 24px; height: 24px;
+  border-radius: 50%;
+  border: 1px solid var(--text-dim);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Orbitron', monospace;
+  font-size: 0.65rem;
+  font-weight: 700;
+  flex-shrink: 0;
+  transition: all 0.2s;
+}
+.quiz-option.correct { border-color: var(--accent-green); background: rgba(0,230,118,0.1); }
+.quiz-option.correct .opt-letter { background: var(--accent-green); border-color: var(--accent-green); color: var(--bg-deep); }
+.quiz-option.wrong { border-color: var(--accent-red); background: rgba(255,23,68,0.1); }
+.quiz-option.wrong .opt-letter { background: var(--accent-red); border-color: var(--accent-red); color: white; }
+.quiz-option.disabled { cursor: default; }
+
+.quiz-feedback {
+  padding: 0.8rem 1.2rem;
+  border-radius: 8px;
+  margin-top: 0.8rem;
+  font-size: 0.88rem;
+  line-height: 1.6;
+  display: none;
+}
+.quiz-feedback.show { display: block; animation: feedbackIn 0.3s ease; }
+@keyframes feedbackIn { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: translateY(0); } }
+.quiz-feedback.correct-fb { background: rgba(0,230,118,0.1); border: 1px solid rgba(0,230,118,0.3); color: #a5d6a7; }
+.quiz-feedback.wrong-fb { background: rgba(255,23,68,0.1); border: 1px solid rgba(255,23,68,0.3); color: #ef9a9a; }
+
+.hint-btn {
+  background: none;
+  border: 1px dashed rgba(255,214,0,0.4);
+  color: var(--accent-gold);
+  padding: 0.4rem 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-family: 'Exo 2', sans-serif;
+  font-size: 0.8rem;
+  transition: all 0.2s;
+  margin-top: 0.5rem;
+}
+.hint-btn:hover { background: rgba(255,214,0,0.1); }
+
+.hint-box {
+  background: rgba(255,214,0,0.05);
+  border: 1px solid rgba(255,214,0,0.2);
+  border-radius: 8px;
+  padding: 0.8rem 1rem;
+  margin-top: 0.8rem;
+  font-size: 0.85rem;
+  color: #fff8e1;
+  line-height: 1.6;
+  display: none;
+}
+.hint-box.show { display: block; animation: feedbackIn 0.3s ease; }
+
+.quiz-divider {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 2rem 0;
+}
+
+/* ===== CHALLENGE VAULT ===== */
+.category-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin: 2rem 0 1rem;
+}
+.cat-line { flex: 1; height: 1px; background: linear-gradient(to right, var(--border), transparent); }
+.cat-label {
+  font-family: 'Orbitron', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 3px;
+  color: var(--accent-purple);
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.vault-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  margin-bottom: 1rem;
+  overflow: hidden;
+  transition: border-color 0.2s;
+}
+.vault-card:hover { border-color: rgba(0,229,255,0.25); }
+
+.vault-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 1.2rem;
+  cursor: pointer;
+}
+.vault-qnum {
+  font-family: 'Orbitron', monospace;
+  font-size: 0.8rem;
+  color: var(--accent-gold);
+  min-width: 50px;
+}
+.vault-qtopic {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  flex: 1;
+}
+.vault-arrow {
+  color: var(--text-dim);
+  transition: transform 0.3s;
+  font-size: 0.9rem;
+}
+.vault-card.open .vault-arrow { transform: rotate(180deg); }
+
+.vault-body {
+  display: none;
+  padding: 0 1.2rem 1.2rem;
+  border-top: 1px solid var(--border);
+}
+.vault-card.open .vault-body { display: block; padding-top: 1rem; }
+
+.vault-options {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+  margin: 0.8rem 0;
+}
+
+.vault-opt {
+  padding: 0.6rem 0.8rem;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-size: 0.82rem;
+  cursor: pointer;
+  background: var(--bg-panel);
+  color: var(--text-secondary);
+  transition: all 0.2s;
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+.vault-opt:hover:not(.disabled) { border-color: var(--accent-cyan); color: var(--text-primary); }
+.vault-opt.correct { border-color: var(--accent-green) !important; background: rgba(0,230,118,0.1); color: #a5d6a7; }
+.vault-opt.wrong { border-color: var(--accent-red) !important; background: rgba(255,23,68,0.1); color: #ef9a9a; }
+.vault-opt.disabled { cursor: default; }
+
+.reveal-btn {
+  background: rgba(0,229,255,0.1);
+  border: 1px solid rgba(0,229,255,0.3);
+  color: var(--accent-cyan);
+  padding: 0.4rem 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-family: 'Exo 2', sans-serif;
+  font-size: 0.8rem;
+  margin-right: 0.5rem;
+  transition: all 0.2s;
+}
+.reveal-btn:hover { background: rgba(0,229,255,0.2); }
+
+.answer-reveal {
+  background: rgba(0,230,118,0.08);
+  border: 1px solid rgba(0,230,118,0.2);
+  border-radius: 6px;
+  padding: 0.6rem 1rem;
+  font-size: 0.83rem;
+  color: #a5d6a7;
+  margin-top: 0.6rem;
+  display: none;
+  font-family: 'Space Mono', monospace;
+}
+.answer-reveal.show { display: block; }
+
+/* ===== DEEP DIVE ===== */
+.solution-step {
+  background: var(--bg-panel);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent-purple);
+  border-radius: 8px;
+  padding: 1.2rem;
+  margin-bottom: 1rem;
+  position: relative;
+}
+.solution-step-num {
+  position: absolute;
+  top: -10px;
+  left: 12px;
+  background: var(--accent-purple);
+  color: white;
+  font-family: 'Orbitron', monospace;
+  font-size: 0.6rem;
+  padding: 0.2rem 0.5rem;
+  border-radius: 3px;
+}
+
+.result-highlight {
+  background: linear-gradient(135deg, rgba(255,214,0,0.1), rgba(0,229,255,0.05));
+  border: 1px solid var(--accent-gold);
+  border-radius: 10px;
+  padding: 1.5rem;
+  text-align: center;
+  margin-top: 1.5rem;
+}
+.result-label { font-size: 0.8rem; color: var(--text-dim); margin-bottom: 0.5rem; font-family: 'Space Mono', monospace; }
+.result-value {
+  font-family: 'Orbitron', monospace;
+  font-size: 2rem;
+  font-weight: 900;
+  color: var(--accent-gold);
+  text-shadow: var(--glow-gold);
+}
+.result-answer { font-size: 0.85rem; color: var(--accent-green); margin-top: 0.4rem; }
+
+/* ===== COOKIE FLOW ===== */
+.cookie-flow {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.cookie-step {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  opacity: 0.4;
+  pointer-events: none;
+  transition: all 0.4s;
+}
+.cookie-step.unlocked { opacity: 1; pointer-events: all; }
+.cookie-step-header {
+  background: linear-gradient(135deg, rgba(0,229,255,0.1), rgba(124,77,255,0.1));
+  padding: 1rem 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.cookie-icon { font-size: 1.5rem; }
+.cookie-step-title { font-family: 'Orbitron', monospace; font-size: 0.85rem; color: var(--text-primary); }
+.cookie-step-sub { font-size: 0.75rem; color: var(--text-secondary); margin-top: 0.2rem; }
+.cookie-body { padding: 1.5rem; }
+
+.cookie-status {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+  color: var(--text-dim);
+  margin-left: auto;
+}
+.cookie-status.done { color: var(--accent-green); }
+
+/* ===== HOMEPAGE GRID ===== */
+.home-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.home-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 1.8rem;
+  cursor: pointer;
+  transition: all 0.3s;
+  position: relative;
+  overflow: hidden;
+}
+.home-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: var(--card-accent, var(--accent-cyan));
+  transform: scaleX(0);
+  transition: transform 0.3s;
+}
+.home-card:hover::before { transform: scaleX(1); }
+.home-card:hover { transform: translateY(-4px); box-shadow: 0 20px 40px rgba(0,0,0,0.4); border-color: rgba(0,229,255,0.2); }
+
+.home-card-icon { font-size: 2.5rem; margin-bottom: 1rem; }
+.home-card-title { font-family: 'Orbitron', monospace; font-size: 1rem; font-weight: 700; margin-bottom: 0.6rem; }
+.home-card-desc { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6; }
+.home-card-badge {
+  display: inline-block;
+  margin-top: 1rem;
+  font-size: 0.7rem;
+  font-family: 'Space Mono', monospace;
+  color: var(--text-dim);
+}
+
+.home-card.cyan-card { --card-accent: var(--accent-cyan); }
+.home-card.gold-card { --card-accent: var(--accent-gold); }
+.home-card.purple-card { --card-accent: var(--accent-purple); }
+.home-card.green-card { --card-accent: var(--accent-green); }
+
+.stats-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.stat-item {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 1rem;
+  text-align: center;
+}
+.stat-value { font-family: 'Orbitron', monospace; font-size: 1.4rem; font-weight: 700; }
+.stat-label { font-size: 0.7rem; color: var(--text-dim); margin-top: 0.3rem; font-family: 'Space Mono', monospace; }
+.stat-cyan .stat-value { color: var(--accent-cyan); }
+.stat-gold .stat-value { color: var(--accent-gold); }
+.stat-green .stat-value { color: var(--accent-green); }
+.stat-purple .stat-value { color: #b39ddb; }
+
+/* ===== NOTIFICATIONS ===== */
+#toast {
+  position: fixed;
+  top: 80px;
+  right: 20px;
+  z-index: 9999;
+  background: var(--bg-panel);
+  border: 1px solid var(--accent-green);
+  border-radius: 8px;
+  padding: 0.8rem 1.5rem;
+  font-size: 0.9rem;
+  color: var(--accent-green);
+  transform: translateX(200%);
+  transition: transform 0.3s;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+}
+#toast.show { transform: translateX(0); }
+#toast.err { border-color: var(--accent-red); color: var(--accent-red); }
+
+/* Category tabs */
+.cat-tabs {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.5rem;
+}
+.cat-tab {
+  padding: 0.4rem 0.9rem;
+  border-radius: 20px;
+  border: 1px solid var(--border);
+  font-size: 0.78rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  color: var(--text-secondary);
+  background: var(--bg-card);
+}
+.cat-tab:hover, .cat-tab.active { border-color: var(--accent-cyan); color: var(--accent-cyan); background: rgba(0,229,255,0.1); }
+
+.progress-bar-wrap {
+  background: rgba(255,255,255,0.05);
+  border-radius: 10px;
+  height: 6px;
+  margin-bottom: 0.3rem;
+  overflow: hidden;
+}
+.progress-bar-fill {
+  height: 100%;
+  border-radius: 10px;
+  background: linear-gradient(to right, var(--accent-cyan), var(--accent-purple));
+  transition: width 0.5s ease;
+}
+
+.topic-score-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.75rem;
+  color: var(--text-dim);
+  margin-bottom: 1rem;
+}
+
+.mathjax-inline { display: inline; }
+</style>
+</head>
+<body>
+
+<div id="toast">✓ Doğru cevap!</div>
+
+<!-- HEADER -->
+<header id="header">
+  <div class="header-inner">
+    <div class="logo">ASTRO<span>MASTERY</span></div>
+    <div class="score-badge">
+      <div style="text-align:right">
+        <div class="score-display">⭐ PUAN: <span id="score-val">0</span></div>
+        <div style="font-size:0.65rem;color:var(--text-dim);margin-top:2px;font-family:'Space Mono',monospace">
+          <span id="correct-count">0</span>/0 doğru
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="app-layout">
+
+<!-- SIDEBAR -->
+<nav id="sidebar">
+  <div class="sidebar-section">
+    <div class="sidebar-title">Navigasyon</div>
+    <div class="nav-item active" onclick="showPage('home')" id="nav-home">
+      <span class="nav-icon">🏠</span> Ana Sayfa
+    </div>
+    <div class="nav-item" onclick="showPage('cookie')" id="nav-cookie">
+      <span class="nav-icon">🍪</span> Cookie-to-Boss
+    </div>
+    <div class="nav-item" onclick="showPage('deepdive')" id="nav-deepdive">
+      <span class="nav-icon">🔭</span> Deep Dive
+    </div>
+    <div class="nav-item" onclick="showPage('vault')" id="nav-vault">
+      <span class="nav-icon">🗄️</span> Challenge Vault
+    </div>
+    <div class="nav-item" onclick="showPage('topics')" id="nav-topics">
+      <span class="nav-icon">📚</span> Konu Anlatımı
+    </div>
+  </div>
+
+  <div class="sidebar-section">
+    <div class="sidebar-title">Hızlı Sabitler</div>
+    <div class="constants-box">
+      <div><span class="const-label">c</span> = <span class="const-val">3×10⁸ m/s</span></div>
+      <div><span class="const-label">h</span> = <span class="const-val">6.626×10⁻³⁴ J·Hz⁻¹</span></div>
+      <div><span class="const-label">G</span> = <span class="const-val">6.67×10⁻¹¹ m³kg⁻¹s⁻²</span></div>
+      <div><span class="const-label">k</span> = <span class="const-val">1.38×10⁻²³ J/K</span></div>
+      <div><span class="const-label">σ</span> = <span class="const-val">5.67×10⁻⁸ W/m²K⁴</span></div>
+      <div><span class="const-label">1 AB</span> = <span class="const-val">1.5×10¹¹ m</span></div>
+      <div><span class="const-label">1 pc</span> = <span class="const-val">3.09×10¹⁶ m</span></div>
+      <div><span class="const-label">L☉</span> = <span class="const-val">3.827×10²⁶ W</span></div>
+      <div><span class="const-label">M☉</span> = <span class="const-val">1.989×10³⁰ kg</span></div>
+      <div><span class="const-label">R☉</span> = <span class="const-val">696 340 km</span></div>
+      <div><span class="const-label">T☉</span> = <span class="const-val">5800 K</span></div>
+    </div>
+  </div>
+
+  <div class="sidebar-section">
+    <div class="sidebar-title">Önemli Formüller</div>
+    <div class="constants-box">
+      <div><span class="const-label">Wien:</span> <span class="const-val">λT=2.9×10⁻³</span></div>
+      <div><span class="const-label">Stefan-B:</span> <span class="const-val">L=4πR²σT⁴</span></div>
+      <div><span class="const-label">Pogson:</span> <span class="const-val">m−M=5log(d)−5</span></div>
+      <div><span class="const-label">Kepler III:</span> <span class="const-val">a³=(M₁+M₂)P²</span></div>
+      <div><span class="const-label">Doppler:</span> <span class="const-val">Δλ/λ=v/c</span></div>
+      <div><span class="const-label">Ayırma:</span> <span class="const-val">θ=1.22λ/D</span></div>
+    </div>
+  </div>
+
+  <div style="padding: 1rem; font-size:0.7rem; color: var(--text-dim); font-family:'Space Mono',monospace; text-align:center;">
+    TÜBİTAK 33. Bilim<br>Olimpiyatları 2025<br>Astronomi & Astrofizik
+  </div>
+</nav>
+
+<!-- MAIN -->
+<main id="main">
+
+<!-- ===== HOME PAGE ===== -->
+<div class="page active" id="page-home">
+  <div class="section-header">
+    <div class="section-badge">KONTROL MERKEZİ</div>
+    <div class="section-title">Astrofizik <span>Olimpiyat</span> Platformu</div>
+    <div class="section-desc">TÜBİTAK 33. Bilim Olimpiyatları — Astronomi ve Astrofizik alanında sıfırdan mükemmele giden yolculuğun başlıyor. 25 soruyu derinlemesine öğren, pratik yap, puan kazan.</div>
+  </div>
+
+  <div class="stats-row">
+    <div class="stat-item stat-cyan">
+      <div class="stat-value" id="stat-score">0</div>
+      <div class="stat-label">TOPLAM PUAN</div>
+    </div>
+    <div class="stat-item stat-gold">
+      <div class="stat-value" id="stat-correct">0</div>
+      <div class="stat-label">DOĞRU CEVAP</div>
+    </div>
+    <div class="stat-item stat-green">
+      <div class="stat-value" id="stat-topics">8</div>
+      <div class="stat-label">KONU SAYISI</div>
+    </div>
+    <div class="stat-item stat-purple">
+      <div class="stat-value">25</div>
+      <div class="stat-label">TOPLAM SORU</div>
+    </div>
+  </div>
+
+  <div class="home-grid">
+    <div class="home-card cyan-card" onclick="showPage('cookie')">
+      <div class="home-card-icon">🍪</div>
+      <div class="home-card-title" style="color:var(--accent-cyan)">Cookie-to-Boss</div>
+      <div class="home-card-desc">Adım adım öğrenme akışı. Wien Yasası → Uzaklık Modülü → Stefan-Boltzmann → Yıldız Yarıçapı Hesabı. Sıfırdan zirveye!</div>
+      <div class="home-card-badge">→ 4 seviye · Soru 20</div>
+    </div>
+    <div class="home-card gold-card" onclick="showPage('deepdive')">
+      <div class="home-card-icon">🔬</div>
+      <div class="home-card-title" style="color:var(--accent-gold)">Deep Dive Solution</div>
+      <div class="home-card-desc">Soru 5: Anakol ömrü hesabı. L∝M³·⁵ ilişkisi ile t∝M⁻²·⁵ mantığını görselleştirerek adım adım keşfet. Cevap: 375 milyon yıl!</div>
+      <div class="home-card-badge">→ Detaylı çözüm · Soru 5</div>
+    </div>
+    <div class="home-card purple-card" onclick="showPage('vault')">
+      <div class="home-card-icon">🗄️</div>
+      <div class="home-card-title" style="color:#b39ddb">Challenge Vault</div>
+      <div class="home-card-desc">Tüm 25 soruyu kategorilere göre çöz. Her soru için ipucu, seçenekler ve doğru cevap açıklaması mevcut.</div>
+      <div class="home-card-badge">→ 25 soru · 8 kategori</div>
+    </div>
+    <div class="home-card green-card" onclick="showPage('topics')">
+      <div class="home-card-icon">📚</div>
+      <div class="home-card-title" style="color:var(--accent-green)">Konu Anlatımı & Pratik</div>
+      <div class="home-card-desc">Her konu için teori anlatımı + 5'er pratik soru. Fotoelektrik, Kepler, Wien, Doppler ve daha fazlası...</div>
+      <div class="home-card-badge">→ 8 konu · 40+ pratik</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <div class="card-title">📊 Konu Haritası</div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:0.8rem;">
+      ${[
+        {name:"Fotoelektrik Etki",color:"var(--accent-purple)",q:"S1"},
+        {name:"Orbital Mekanik",color:"var(--accent-cyan)",q:"S2,S11,S21"},
+        {name:"Galaksi Tayf / Doppler",color:"var(--accent-gold)",q:"S3"},
+        {name:"Dönme Dinamiği",color:"#ff6090",q:"S4,S6"},
+        {name:"Yıldız Fiziği",color:"var(--accent-green)",q:"S5,S16,S17,S18,S20,S24"},
+        {name:"Atom Modeli",color:"#b39ddb",q:"S7,S10"},
+        {name:"Termodinamik",color:"#ffcc02",q:"S8"},
+        {name:"Teleskop / Optik",color:"var(--accent-cyan)",q:"S9,S13"},
+        {name:"Gezegenler / Gözlem",color:"var(--accent-gold)",q:"S12,S15,S19"},
+        {name:"Kinematik",color:"#ff6090",q:"S14"},
+        {name:"Yıldız Parlaklığı",color:"var(--accent-green)",q:"S17,S18"},
+        {name:"Kozmoloji",color:"#b39ddb",q:"S22"},
+        {name:"Statik Mekanik",color:"var(--accent-gold)",q:"S23"},
+        {name:"Yıldız Mesafesi",color:"var(--accent-cyan)",q:"S25"}
+      ].map(t=>`
+      <div style="background:var(--bg-panel);border:1px solid var(--border);border-left:3px solid ${t.color};border-radius:6px;padding:0.6rem 0.8rem;">
+        <div style="font-size:0.82rem;color:var(--text-primary);font-weight:600;">${t.name}</div>
+        <div style="font-size:0.7rem;color:var(--text-dim);font-family:'Space Mono',monospace;margin-top:0.2rem;">${t.q}</div>
+      </div>`).join('')}
+    </div>
+  </div>
+</div>
+
+<!-- ===== COOKIE TO BOSS ===== -->
+<div class="page" id="page-cookie">
+  <div class="section-header">
+    <div class="section-badge">ADIM ADIM ÖĞRENME</div>
+    <div class="section-title">🍪 <span>Cookie-to-Boss</span></div>
+    <div class="section-desc">Soru 20'yi (Yıldız yarıçapı hesaplama) çözmeden önce, gereken 3 temel konsepti sırayla öğreniyoruz. Her adımı tamamladıkça bir sonraki açılır.</div>
+  </div>
+
+  <div class="cookie-flow">
+    <!-- STEP 1: Wien Yasası -->
+    <div class="cookie-step unlocked" id="cookie-1">
+      <div class="cookie-step-header">
+        <span class="cookie-icon">🌡️</span>
+        <div>
+          <div class="cookie-step-title">Seviye 1 — Wien'in Yerdeğiştirme Yasası</div>
+          <div class="cookie-step-sub">Sıcaklık ile maksimum dalga boyu arasındaki ilişki</div>
+        </div>
+        <div class="cookie-status" id="cs1-status">⬛ Bekliyor</div>
+      </div>
+      <div class="cookie-body">
+        <div class="theory-box">
+          <div class="theory-title">📖 Teori: Wien Yasası</div>
+          <p style="font-size:0.88rem;line-height:1.7;color:var(--text-secondary);">Bir kara cisim (her dalgaboyunda ışıyan ideal cisim) ısındıkça, en çok ışıma yaptığı dalga boyu kısalır. Bu ters orantılı ilişki <strong>Wien Yasası</strong> ile ifade edilir:</p>
+          <div class="formula-block">λ_max × T = 2.9 × 10⁻³ m·K</div>
+          <p style="font-size:0.85rem;color:var(--text-secondary);line-height:1.6;">Örnek: Güneş'in yüzey sıcaklığı T☉ = 5800 K → λ_max = 2.9×10⁻³ / 5800 ≈ 500 nm (yeşil-sarı bölge). Yani Güneş en çok sarı-yeşil ışık yayar! Daha sıcak yıldızlar mavi, daha soğuklar kırmızı görünür.</p>
+        </div>
+
+        <div style="margin-bottom:1rem;">
+          <div style="font-size:0.95rem;margin-bottom:1rem;line-height:1.7;">
+            <strong>Seviye 1 Sorusu:</strong> Yüzey sıcaklığı T = 10.000 K olan bir yıldızın maksimum ışıma dalga boyu kaç nm'dir?
+          </div>
+          <div class="quiz-options" id="c1-opts">
+            <div class="quiz-option" onclick="cookieAnswer(this, 1, false)"><span class="opt-letter">A</span>580 nm</div>
+            <div class="quiz-option" onclick="cookieAnswer(this, 1, true)"><span class="opt-letter">B</span>290 nm</div>
+            <div class="quiz-option" onclick="cookieAnswer(this, 1, false)"><span class="opt-letter">C</span>145 nm</div>
+            <div class="quiz-option" onclick="cookieAnswer(this, 1, false)"><span class="opt-letter">D</span>1160 nm</div>
+          </div>
+          <div class="quiz-feedback" id="c1-fb"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 2: Uzaklık Modülü -->
+    <div class="cookie-step" id="cookie-2">
+      <div class="cookie-step-header">
+        <span class="cookie-icon">📏</span>
+        <div>
+          <div class="cookie-step-title">Seviye 2 — Uzaklık Modülü (Pogson)</div>
+          <div class="cookie-step-sub">Görünür parlaklık, mutlak parlaklık ve uzaklık</div>
+        </div>
+        <div class="cookie-status" id="cs2-status">🔒 Kilitli</div>
+      </div>
+      <div class="cookie-body">
+        <div class="theory-box">
+          <div class="theory-title">📖 Teori: Uzaklık Modülü</div>
+          <p style="font-size:0.88rem;line-height:1.7;color:var(--text-secondary);"><strong>Görünür parlaklık (m):</strong> Yıldızın bizden göründüğü parlaklık. <strong>Mutlak parlaklık (M):</strong> Yıldız tam 10 pc uzaklıkta olsaydı görünürdü. Aralarındaki fark uzaklığı verir:</p>
+          <div class="formula-block">m − M = 5 log₁₀(d) − 5 &nbsp;&nbsp;&nbsp; (d: parsek cinsinden)</div>
+          <p style="font-size:0.85rem;color:var(--text-secondary);line-height:1.6;">Örnek: Güneş'in m ≈ −26.7, M = +4.83. Eğer Güneş 10 pc uzaklıkta olsaydı, m = M = +4.83 görünürdü — çıplak gözle zar zor seçilirdi!</p>
+        </div>
+
+        <div style="font-size:0.95rem;margin-bottom:1rem;line-height:1.7;">
+          <strong>Seviye 2 Sorusu:</strong> Mutlak parlaklığı M = 5 olan bir yıldızın görünür parlaklığı m = 10 ise yıldızın uzaklığı kaç parsek?
+        </div>
+        <div class="quiz-options" id="c2-opts">
+          <div class="quiz-option" onclick="cookieAnswer(this, 2, false)"><span class="opt-letter">A</span>10 pc</div>
+          <div class="quiz-option" onclick="cookieAnswer(this, 2, false)"><span class="opt-letter">B</span>50 pc</div>
+          <div class="quiz-option" onclick="cookieAnswer(this, 2, true)"><span class="opt-letter">C</span>100 pc</div>
+          <div class="quiz-option" onclick="cookieAnswer(this, 2, false)"><span class="opt-letter">D</span>1000 pc</div>
+        </div>
+        <div class="quiz-feedback" id="c2-fb"></div>
+      </div>
+    </div>
+
+    <!-- STEP 3: Stefan-Boltzmann -->
+    <div class="cookie-step" id="cookie-3">
+      <div class="cookie-step-header">
+        <span class="cookie-icon">⭐</span>
+        <div>
+          <div class="cookie-step-title">Seviye 3 — Stefan-Boltzmann Yasası</div>
+          <div class="cookie-step-sub">Yıldız ışınım gücü, sıcaklık ve yarıçap</div>
+        </div>
+        <div class="cookie-status" id="cs3-status">🔒 Kilitli</div>
+      </div>
+      <div class="cookie-body">
+        <div class="theory-box">
+          <div class="theory-title">📖 Teori: Stefan-Boltzmann</div>
+          <p style="font-size:0.88rem;line-height:1.7;color:var(--text-secondary);">Bir yıldızın toplam ışınım gücü (luminozitesi) yüzey alanıyla ve sıcaklığın 4. kuvvetiyle orantılıdır. σ Stefan-Boltzmann sabitidir:</p>
+          <div class="formula-block">L = 4πR²σT⁴</div>
+          <p style="font-size:0.85rem;color:var(--text-secondary);line-height:1.6;">T iki katına çıkarsa: L 2⁴ = 16 kat artar! R iki katına çıkarsa: L 4 kat artar. Sıcaklık, yarıçaptan çok daha baskın rol oynar.</p>
+        </div>
+
+        <div style="font-size:0.95rem;margin-bottom:1rem;line-height:1.7;">
+          <strong>Seviye 3 Sorusu:</strong> Yıldız A'nın sıcaklığı Yıldız B'nin 2 katı, yarıçapları eşit. Yıldız A'nın luminozitesi B'nin kaç katıdır?
+        </div>
+        <div class="quiz-options" id="c3-opts">
+          <div class="quiz-option" onclick="cookieAnswer(this, 3, false)"><span class="opt-letter">A</span>2 kat</div>
+          <div class="quiz-option" onclick="cookieAnswer(this, 3, false)"><span class="opt-letter">B</span>4 kat</div>
+          <div class="quiz-option" onclick="cookieAnswer(this, 3, false)"><span class="opt-letter">C</span>8 kat</div>
+          <div class="quiz-option" onclick="cookieAnswer(this, 3, true)"><span class="opt-letter">D</span>16 kat</div>
+        </div>
+        <div class="quiz-feedback" id="c3-fb"></div>
+      </div>
+    </div>
+
+    <!-- BOSS: Soru 20 -->
+    <div class="cookie-step" id="cookie-boss">
+      <div class="cookie-step-header" style="background:linear-gradient(135deg,rgba(255,214,0,0.15),rgba(0,229,255,0.1));">
+        <span class="cookie-icon">👑</span>
+        <div>
+          <div class="cookie-step-title" style="color:var(--accent-gold);">BOSS SORUSU — Olimpiyat Soru 20</div>
+          <div class="cookie-step-sub">Tüm konseptleri birleştir: Wien + Pogson + Stefan-Boltzmann</div>
+        </div>
+        <div class="cookie-status" id="cs-boss-status">🔒 Kilitli</div>
+      </div>
+      <div class="cookie-body">
+        <div style="background:rgba(255,214,0,0.05);border:1px solid rgba(255,214,0,0.2);border-radius:8px;padding:1.2rem;margin-bottom:1.5rem;">
+          <div style="font-size:0.88rem;line-height:1.8;color:var(--text-primary);">
+            <strong style="color:var(--accent-gold);">Orijinal Soru (TÜBİTAK 2025, S20):</strong><br>
+            Bir ötegezegen sisteminde yıldızın kara cisim tayfındaki enerji dağılımının maksimum dalga boyu <strong>λ_max = 580 nm</strong> ve sistemin bizden uzaklığı <strong>1.00 kpc</strong>'dir.<br>
+            Sistemin görünür parlaklığı <strong>m = 16.08 kadir</strong> ise yıldızın yarıçapı Güneş'in yarıçapının yaklaşık kaç katıdır?<br>
+            <em style="color:var(--text-dim);font-size:0.8rem;">(π=3, L☉=4×10²⁶ W, R☉=7×10⁸ m, σ=6×10⁻⁸ W/m²K⁴)</em>
+          </div>
+        </div>
+
+        <div style="font-family:'Space Mono',monospace;font-size:0.8rem;line-height:2;color:var(--text-secondary);background:var(--bg-panel);border:1px solid var(--border);border-radius:8px;padding:1.2rem;margin-bottom:1.5rem;">
+          <strong style="color:var(--accent-cyan);font-family:'Orbitron',monospace;font-size:0.7rem;display:block;margin-bottom:0.5rem;">ADIM ADIM ÇÖZÜM:</strong>
+          <span style="color:var(--accent-gold);">Adım 1 (Wien):</span> T = 2.9×10⁻³ / 580×10⁻⁹ = 5000 K<br>
+          <span style="color:var(--accent-gold);">Adım 2 (Pogson):</span> d = 1 kpc = 1000 pc → m−M = 5log(1000)−5 = 15−5 = 10<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;m = 16.08, yani M = 16.08 − 10 = 6.08<br>
+          <span style="color:var(--accent-gold);">Adım 3 (Luminozite):</span> M☉ = 4.83 → ΔM = 6.08 − 4.83 = 1.25<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;L/L☉ = 10^(1.25/2.5 × (−1)) = 10^(−0.5) ≈ 0.316<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Yani L ≈ 0.316 × 4×10²⁶ ≈ 1.26×10²⁶ W<br>
+          <span style="color:var(--accent-gold);">Adım 4 (Stefan-B):</span> L = 4πR²σT⁴<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;R² = L / (4πσT⁴) = 1.26×10²⁶ / (4×3×6×10⁻⁸×5000⁴)<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;T⁴ = 625×10¹² → R² = 1.26×10²⁶ / (72×10⁻⁸×625×10¹²)<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;R² = 1.26×10²⁶ / (4.5×10⁸) ≈ 2.8×10¹⁷ m²<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;R ≈ 5.3×10⁸ m → R/R☉ = 5.3/7 ≈ <strong style="color:var(--accent-green);">5/7 ≈ 0.71</strong>
+        </div>
+
+        <div class="quiz-options" id="boss-opts">
+          <div class="quiz-option" onclick="cookieAnswer(this,'boss',false)"><span class="opt-letter">A</span>1/3</div>
+          <div class="quiz-option" onclick="cookieAnswer(this,'boss',true)"><span class="opt-letter">B</span>5/7</div>
+          <div class="quiz-option" onclick="cookieAnswer(this,'boss',false)"><span class="opt-letter">C</span>5/4</div>
+          <div class="quiz-option" onclick="cookieAnswer(this,'boss',false)"><span class="opt-letter">D</span>5</div>
+          <div class="quiz-option" onclick="cookieAnswer(this,'boss',false)"><span class="opt-letter">E</span>6</div>
+        </div>
+        <div class="quiz-feedback" id="boss-fb"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== DEEP DIVE ===== -->
+<div class="page" id="page-deepdive">
+  <div class="section-header">
+    <div class="section-badge">ÖRNEK ÇÖZÜM</div>
+    <div class="section-title">🔭 Deep <span>Dive</span> — Soru 5</div>
+    <div class="section-desc">Anakol yıldızı ömrü hesabı. L∝M³·⁵ ilişkisinden t∝M⁻²·⁵ çıkarımı — adım adım, görselleştirilmiş.</div>
+  </div>
+
+  <div class="card" style="border-color:rgba(255,214,0,0.3);">
+    <div style="background:rgba(255,214,0,0.05);border:1px solid rgba(255,214,0,0.2);border-radius:8px;padding:1.2rem;margin-bottom:1.5rem;">
+      <strong style="color:var(--accent-gold);font-family:'Orbitron',monospace;font-size:0.8rem;">ORİJİNAL SORU (TÜBİTAK 2025, S5)</strong><br><br>
+      <span style="font-size:0.9rem;line-height:1.7;">Yıldızların enerji üretimi kütleleriyle doğru orantılıdır (E∼M). Anakol yıldızlarının ışınım gücünün kütlelerinin 3.5 kuvvetiyle orantılı olduğu anlaşılmıştır (L∼M³·⁵). Güneş'in anakol ömrünün 12 milyar yıl olduğu bilinmektedir. Kütlesi Güneş'in <strong>4 katı</strong> (M = 4M☉) bir yıldızın anakol ömrü milyon yıl cinsinden kaçtır?</span>
+    </div>
+
+    <div class="theory-box" style="margin-bottom:1.5rem;">
+      <div class="theory-title">🎯 Fiziksel Arka Plan: Neden Büyük Yıldızlar Daha Kısa Yaşar?</div>
+      <p style="font-size:0.87rem;line-height:1.7;color:var(--text-secondary);">
+        Bir yıldızın ana kol ömrü, ne kadar "yakıtı" olduğuna ve bu yakıtı ne hızda tükettiğine bağlıdır. Büyük kütleli yıldızlar çok daha fazla hidrojen füzyonuna zorlanır — çekirdekteki basınç artar, reaksiyon hızı patlar. 10 güneş kütleli bir yıldız, Güneş'ten 1000 kat parlak ama ömrü 100 kat kısadır. Bu asimetri evrenin temel bir gerçeğidir.
+      </p>
+    </div>
+  </div>
+
+  <div class="solution-step">
+    <div class="solution-step-num">ADIM 1</div>
+    <div class="card-title" style="margin-bottom:0.8rem;">📌 Temel İlişkiyi Kur</div>
+    <p style="font-size:0.88rem;line-height:1.7;color:var(--text-secondary);">Ömür = Toplam Enerji / Güç (birim zamanda harcanan enerji = luminozite)</p>
+    <div class="formula-block">t = E / L</div>
+    <p style="font-size:0.88rem;line-height:1.7;color:var(--text-secondary);">Verilen bilgiler: <strong style="color:var(--accent-cyan);">E ∼ M</strong> ve <strong style="color:var(--accent-cyan);">L ∼ M³·⁵</strong></p>
+    <div class="formula-block">t ∼ E/L ∼ M / M³·⁵ = M^(1−3.5) = M^(−2.5)</div>
+  </div>
+
+  <div class="solution-step">
+    <div class="solution-step-num">ADIM 2</div>
+    <div class="card-title" style="margin-bottom:0.8rem;">⚖️ Güneş ile Kıyasla (Oran Kurma)</div>
+    <p style="font-size:0.88rem;line-height:1.7;color:var(--text-secondary);">İki yıldız arasında oran yazarsak bilinmeyen sabitler düşer:</p>
+    <div class="formula-block">t_yıldız / t_Güneş = (M_yıldız / M_Güneş)^(−2.5)</div>
+    <p style="font-size:0.88rem;line-height:1.7;color:var(--text-secondary);">Verilen: M_yıldız = 4M_Güneş, yani M_yıldız/M_Güneş = 4</p>
+    <div class="formula-block">t_yıldız / t_Güneş = 4^(−2.5) = 1 / 4^2.5</div>
+  </div>
+
+  <div class="solution-step">
+    <div class="solution-step-num">ADIM 3</div>
+    <div class="card-title" style="margin-bottom:0.8rem;">🧮 4^2.5 Hesapla</div>
+    <p style="font-size:0.88rem;line-height:1.7;color:var(--text-secondary);">4^2.5 = 4^2 × 4^0.5 = 16 × 2 = 32</p>
+    <div class="formula-block">t_yıldız / t_Güneş = 1/32</div>
+    <p style="font-size:0.88rem;line-height:1.7;color:var(--text-secondary);">Yani 4M_Güneş kütleli yıldız, Güneş'ten 32 kat daha hızlı "yakar" ve 32 kat erken ölür!</p>
+  </div>
+
+  <div class="solution-step">
+    <div class="solution-step-num">ADIM 4</div>
+    <div class="card-title" style="margin-bottom:0.8rem;">📊 Sayısal Sonuç</div>
+    <p style="font-size:0.88rem;line-height:1.7;color:var(--text-secondary);">t_Güneş = 12 milyar yıl = 12.000 milyon yıl</p>
+    <div class="formula-block">t_yıldız = 12.000 / 32 = 375 milyon yıl</div>
+  </div>
+
+  <div class="result-highlight">
+    <div class="result-label">OLİMPİYAT CEVABI</div>
+    <div class="result-value">375 Milyon Yıl</div>
+    <div class="result-answer">✓ Seçenek C — Doğru Cevap</div>
+  </div>
+
+  <!-- Ek pratik soruları -->
+  <div style="margin-top:2rem;">
+    <div class="card-title" style="margin-bottom:1.5rem;font-size:1rem;color:var(--text-primary);">🎯 Deep Dive Pratik Soruları</div>
+
+    <div class="card" id="dd-q1">
+      <div style="font-size:0.9rem;margin-bottom:1rem;line-height:1.7;"><strong>DD.1)</strong> Kütlesi Güneş'in 2 katı olan bir yıldızın anakol ömrü Güneş'in ömrünün kaç katıdır? (L∼M³·⁵, E∼M)</div>
+      <div class="quiz-options" id="dd1-opts">
+        <div class="quiz-option" onclick="vaultAns(this,'dd1',false,'A')"><span class="opt-letter">A</span>1/2</div>
+        <div class="quiz-option" onclick="vaultAns(this,'dd1',true,'B')"><span class="opt-letter">B</span>1/(2^2.5) ≈ 1/5.66</div>
+        <div class="quiz-option" onclick="vaultAns(this,'dd1',false,'C')"><span class="opt-letter">C</span>2^2.5 ≈ 5.66</div>
+        <div class="quiz-option" onclick="vaultAns(this,'dd1',false,'D')"><span class="opt-letter">D</span>1/8</div>
+      </div>
+      <div class="quiz-feedback" id="dd1-fb"></div>
+    </div>
+
+    <div class="card" id="dd-q2">
+      <div style="font-size:0.9rem;margin-bottom:1rem;line-height:1.7;"><strong>DD.2)</strong> t∝M^x formülündeki x üssü kaçtır? (E∼M, L∼M³·⁵)</div>
+      <div class="quiz-options" id="dd2-opts">
+        <div class="quiz-option" onclick="vaultAns(this,'dd2',false,'A')"><span class="opt-letter">A</span>+3.5</div>
+        <div class="quiz-option" onclick="vaultAns(this,'dd2',false,'B')"><span class="opt-letter">B</span>+2.5</div>
+        <div class="quiz-option" onclick="vaultAns(this,'dd2',true,'C')"><span class="opt-letter">C</span>−2.5</div>
+        <div class="quiz-option" onclick="vaultAns(this,'dd2',false,'D')"><span class="opt-letter">D</span>−3.5</div>
+      </div>
+      <div class="quiz-feedback" id="dd2-fb"></div>
+    </div>
+
+    <div class="card" id="dd-q3">
+      <div style="font-size:0.9rem;margin-bottom:1rem;line-height:1.7;"><strong>DD.3)</strong> Güneş'in anakol ömrü 12 Gyr. 9M☉ kütleli yıldızın ömrü kaç Myr?</div>
+      <div class="quiz-options" id="dd3-opts">
+        <div class="quiz-option" onclick="vaultAns(this,'dd3',false,'A')"><span class="opt-letter">A</span>250 Myr</div>
+        <div class="quiz-option" onclick="vaultAns(this,'dd3',true,'B')"><span class="opt-letter">B</span>≈148 Myr</div>
+        <div class="quiz-option" onclick="vaultAns(this,'dd3',false,'C')"><span class="opt-letter">C</span>≈375 Myr</div>
+        <div class="quiz-option" onclick="vaultAns(this,'dd3',false,'D')"><span class="opt-letter">D</span>≈67 Myr</div>
+      </div>
+      <div class="quiz-feedback" id="dd3-fb"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== CHALLENGE VAULT ===== -->
+<div class="page" id="page-vault">
+  <div class="section-header">
+    <div class="section-badge">TÜM SORULAR</div>
+    <div class="section-title">🗄️ Challenge <span>Vault</span></div>
+    <div class="section-desc">25 sorunun tamamı kategorilere göre düzenlenmiş. Her soru için ipucu, seçenekler ve cevap açıklaması mevcuttur. Soruları rastgele sırada keşfet!</div>
+  </div>
+
+  <div id="vault-questions"></div>
+</div>
+
+<!-- ===== TOPICS PAGE ===== -->
+<div class="page" id="page-topics">
+  <div class="section-header">
+    <div class="section-badge">KONU ANALİZİ</div>
+    <div class="section-title">📚 Konu <span>Anlatımı</span> & Pratik</div>
+    <div class="section-desc">Her konuyu sıfırdan öğren, ardından 5'er pratik soru çöz. Yıldızların fiziğinden kozmolojiğe kadar her şey burada.</div>
+  </div>
+
+  <div class="cat-tabs" id="topic-tabs"></div>
+  <div id="topic-content"></div>
+</div>
+
+</main>
+</div>
+
+<script>
+// ===== STATE =====
+let score = 0, correctCount = 0, totalAttempted = 0;
+const answered = {};
+
+function updateScore(delta) {
+  score += delta;
+  correctCount++;
+  document.getElementById('score-val').textContent = score;
+  document.getElementById('correct-count').textContent = correctCount;
+  document.getElementById('stat-score').textContent = score;
+  document.getElementById('stat-correct').textContent = correctCount;
+}
+
+function showToast(msg, isErr=false) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = isErr ? 'show err' : 'show';
+  setTimeout(()=>t.className='', 2500);
+}
+
+// ===== NAVIGATION =====
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  document.getElementById('page-'+id).classList.add('active');
+  document.getElementById('nav-'+id).classList.add('active');
+  if(id==='vault') renderVault();
+  if(id==='topics') renderTopics();
+}
+
+// ===== COOKIE FLOW =====
+let cookieDone = [false,false,false,false];
+
+function cookieAnswer(el, step, correct) {
+  const stepKey = 'cookie-'+step;
+  if(answered[stepKey]) return;
+  answered[stepKey] = true;
+
+  const container = el.closest('.quiz-options') || el.closest('.cookie-body');
+  const opts = el.parentElement.querySelectorAll('.quiz-option');
+  opts.forEach(o=>o.classList.add('disabled'));
+
+  const fbId = step==='boss' ? 'boss-fb' : 'c'+step+'-fb';
+  const fb = document.getElementById(fbId);
+
+  if(correct) {
+    el.classList.add('correct');
+    fb.textContent = step==='boss' ? '🏆 Muhteşem! Tüm konseptleri başarıyla birleştirdin! Cevap B: 5/7 ≈ 0.71' :
+      step===1 ? '✓ Doğru! λ = 2.9×10⁻³ / 10000 = 290 nm. Mavi-mor bölge, çok sıcak bir yıldız!' :
+      step===2 ? '✓ Doğru! m−M = 10−5 = 5 = 5log(d)−5 → log(d) = 2 → d = 100 pc' :
+      '✓ Doğru! L∝T⁴ olduğundan 2⁴ = 16 kat artar.';
+    fb.className = 'quiz-feedback correct-fb show';
+    updateScore(step==='boss' ? 50 : 20);
+    showToast('✓ Doğru! +' + (step==='boss'?50:20) + ' puan');
+
+    // Unlock next
+    if(step===1) { document.getElementById('cookie-2').classList.add('unlocked'); document.getElementById('cs2-status').textContent='🔓 Açıldı'; document.getElementById('cs1-status').textContent='✅ Tamamlandı'; document.getElementById('cs1-status').className='cookie-status done'; }
+    if(step===2) { document.getElementById('cookie-3').classList.add('unlocked'); document.getElementById('cs3-status').textContent='🔓 Açıldı'; document.getElementById('cs2-status').textContent='✅ Tamamlandı'; document.getElementById('cs2-status').className='cookie-status done'; }
+    if(step===3) { document.getElementById('cookie-boss').classList.add('unlocked'); document.getElementById('cs-boss-status').textContent='🔓 Açıldı'; document.getElementById('cs3-status').textContent='✅ Tamamlandı'; document.getElementById('cs3-status').className='cookie-status done'; }
+    if(step==='boss') { document.getElementById('cs-boss-status').textContent='🏆 Boss yenildi!'; document.getElementById('cs-boss-status').className='cookie-status done'; }
+  } else {
+    el.classList.add('wrong');
+    // Show correct
+    opts.forEach(o=>{ if(o.onclick && o.onclick.toString().includes('true')) o.classList.add('correct'); });
+    fb.textContent = step===1 ? '✗ λ = 2.9×10⁻³ / 10000 = 0.29×10⁻⁶ m = 290 nm (B seçeneği)' :
+      step===2 ? '✗ m−M = 5 = 5log(d)−5 → log(d)=2 → d=100 pc (C seçeneği)' :
+      step===3 ? '✗ L∝T⁴, T 2 katı → L = 2⁴ = 16 kat (D seçeneği)' :
+      '✗ Doğru cevap B: 5/7. Adımları tekrar incele.';
+    fb.className = 'quiz-feedback wrong-fb show';
+    showToast('✗ Yanlış. Doğru cevabı gör.',true);
+  }
+}
+
+// ===== VAULT =====
+const VAULT_DATA = [
+  // Q1
+  {num:1, topic:"Fotoelektrik Etki", cat:"Kuantum Fiziği", tag:"tag-physics",
+   text:"Dalga boyu λ=300 nm olan monokromatik ışık, iş fonksiyonu ϕ=2 eV olan metal yüzeye düşürülmektedir. Metalden ayrışan fotoelektronların maksimum hızı m/s biriminde hangisidir?",
+   hint:"E_foton = hc/λ. K_max = E_foton − ϕ. ½m_e v² = K_max. h=6.626×10⁻³⁴ J·Hz⁻¹",
+   opts:["√(1.51×10¹³)","√(7.53×10¹¹)","√(3.76×10¹⁰)","√(1.87×10¹⁰)","√(1.87×10⁹)"],
+   ans:"B",
+   explain:"E_f = hc/λ = (6.626e-34 × 3e8)/(300e-9) = 6.62e-19 J = 4.14 eV. K_max = 4.14−2 = 2.14 eV = 3.42e-19 J. v² = 2K/m_e = 6.84e-19/9.11e-31 = 7.51e11. Cevap B: √(7.53×10¹¹)"},
+  // Q2
+  {num:2, topic:"Parabolik Yörünge Hızı", cat:"Orbital Mekanik", tag:"tag-astro",
+   text:"Parabolik yörüngeli asteroidin günberi hızı v. Güneş'e uzaklığı günberinin 2 katı olduğunda hızı v'=?",
+   hint:"Açısal momentum korunumu: r₁v₁=r₂v₂⊥. Parabolik yörüngede günberide hız tamamen teğetsel. r₂=2r₁ iken hız bileşenlerini düşün.",
+   opts:["v/2","v/4","√2·v","v/√2","2v/√2"],
+   ans:"D",
+   explain:"Enerji ve açısal momentum korunumu ile: parabolik yörüngede v∝1/√r. r 2 katına çıkınca v, 1/√2 katına iner. v'=v/√2"},
+  // Q3
+  {num:3, topic:"Galaksi Tayfı & Kırmızıya Kayma", cat:"Galaksi Fiziği", tag:"tag-astro",
+   text:"Optik bölgede tayfları verilen G1,G2,G3,G4 galaksilerini yakından uzağa sırala. (Hα=656.3 nm referans, kırmızıya kayma ölçülür)",
+   hint:"Kırmızıya kayma z=Δλ/λ. Uzak galaksilerde Hα çizgisi daha uzun dalgaboyunda görünür. Tayf grafiklerinde Hα'nın gözlenen konumuna bak.",
+   opts:["G1−G2−G3−G4","G2−G1−G3−G4","G4−G3−G2−G1","G4−G2−G3−G1","G2−G3−G1−G4"],
+   ans:"D",
+   explain:"Hα çizgisinin gözlenen konumu karşılaştırılır. G4 en az, G1 en çok kırmızıya kaymış. Yakından uzağa: G4−G2−G3−G1"},
+  // Q4
+  {num:4, topic:"Tork & Açısal İvme", cat:"Dönme Dinamiği", tag:"tag-mech",
+   text:"M=4 kg, L=50 cm çubuk, O noktasında menteşeli. Ucuna F kuvveti 30° açıyla uygulanıyor. Yatay durumdayken α=10 rad/s². F=?",
+   hint:"Σtork = Iα. I_çubuk = ML²/3. Ağırlığın torku (mg·L/2) ile F'nin torku (F·L·sin30°) aynı yönde. g=10 m/s²",
+   opts:["80/3 N","160/3 N","40 N","45 N","80 N"],
+   ans:"B",
+   explain:"I=ML²/3=4×0.25/3=1/3 kg·m². τ_net = Iα = 10/3 N·m. F·L·sin30° − mg·L/2 = 10/3. F×0.5×0.5 − 4×10×0.25 = 10/3. 0.25F = 10+10/3 = 40/3. F = 160/3 ≈ 53.3 N"},
+  // Q5
+  {num:5, topic:"Yıldız Anakol Ömrü", cat:"Yıldız Fiziği", tag:"tag-astro",
+   text:"E∼M, L∼M³·⁵. Güneş'in anakol ömrü 12 Gyr. M=4M☉ yıldızın ömrü kaç Myr?",
+   hint:"t∝E/L∝M/M³·⁵=M⁻²·⁵. t_yıldız/t_☉=(4)⁻²·⁵. 4²·⁵=4²×4^0.5=16×2=32",
+   opts:["125","225","375","250","400"],
+   ans:"C",
+   explain:"t∝M⁻²·⁵. Oran: t/t_☉=(4)^(-2.5)=1/32. t=12000/32=375 Myr"},
+  // Q6
+  {num:6, topic:"Dönme — Açısal Hız", cat:"Dönme Dinamiği", tag:"tag-mech",
+   text:"Eylemsizlik momenti I olan cisim, sabit τ torku ile harekete geçirilir. 4 tam turu tamamladığında açısal hız ω=?",
+   hint:"θ = 4×2π = 8π rad. τ = Iα → α = τ/I. ω² = 2αθ. ω = √(2αθ)",
+   opts:["4√(πτ/I)","2√(πτ/I)","2√(2πτ/I)","√(2πτ/I)","8√(2πτ/I)"],
+   ans:"A",
+   explain:"α=τ/I, θ=8π. ω²=2αθ=2(τ/I)(8π)=16πτ/I. ω=4√(πτ/I). Cevap A"},
+  // Q7
+  {num:7, topic:"Bohr Atom Modeli — Yaklaşım", cat:"Atom Fiziği", tag:"tag-physics",
+   text:"Bohr modelinde rₙ∝n². Δr=rₙ−rₙ₋₁. Büyük n için yaklaşık Δr_yak formülü yazılır. Bağıl hata <%5 için minimum n nedir?",
+   hint:"r_n=r₁n². Δr=r₁(2n−1). Δr_yak≈r₁·2n (büyük n için). Bağıl hata=(2n−(2n−1))/(2n−1)=1/(2n−1). 1/(2n−1)<0.05 → n≥?",
+   opts:["5","9","10","11","12"],
+   ans:"D",
+   explain:"1/(2n−1)<0.05 → 2n−1>20 → n>10.5 → n_min=11. Cevap D"},
+  // Q8
+  {num:8, topic:"Entropi & Termal Denge", cat:"Termodinamik", tag:"tag-thermo",
+   text:"1 kg metal (c=0.800 J/g°C, T₁=900K) izolasyonlu depoya bırakılır. T_depo=27°C=300K. Sistem dengeye ulaştığında entropi değişimi ΔS ≈?",
+   hint:"Büyük depo için T_son≈300 K. ΔS_metal=mc·ln(T_son/T₁)=1000×0.8×ln(300/900). ΔS_depo=Q/T_depo=mc(T₁−T_son)/300. ln(1/3)=−1.1",
+   opts:["−72","−720","0","720","72"],
+   ans:"D",
+   explain:"ΔS_metal=800×ln(1/3)=800×(−1.1)=−880 J/K. Q depoya=800×600=480000 J. ΔS_depo=480000/300=1600. Toplam≈720 J/K. Cevap D"},
+  // Q9
+  {num:9, topic:"Teleskop & Ayırma Gücü", cat:"Optik", tag:"tag-optics",
+   text:"500 km yüksekte uydu, λ=600 nm, Yer'deki 1.0 m cisimleri görmeli. Odak oranı f/8. Odak uzunluğu ≈?",
+   hint:"θ=obje_boyu/uzaklık=1/500000 rad. θ=1.22λ/D → D=1.22×600e-9/(2e-6)=0.366 m. f=f_oranı×D=8×0.366≈2.93 m",
+   opts:["2.0 m","2.5 m","3.0 m","3.5 m","4.0 m"],
+   ans:"C",
+   explain:"θ=1/500000=2×10⁻⁶ rad. D=1.22λ/θ=1.22×6×10⁻⁷/2×10⁻⁶=0.366 m. f=8×0.366≈2.93≈3.0 m. Cevap C"},
+  // Q10
+  {num:10, topic:"Klasik Atom — Elektron Düşüşü", cat:"Atom Fiziği", tag:"tag-physics",
+   text:"Klasik H atomunda elektron dairesel yörüngede. P=e²a²/(6πε₀c³), re=e²/(4πε₀mec²). Düşme süresi re cinsinden nasıl?",
+   hint:"Dairesel yörüngede: merkezcil kuvvet = Coulomb. a∝1/r². P∝a²∝1/r⁴. Enerji E∝1/r. Süre t=E/P∝r³. re ile orantı kur.",
+   opts:["r³/cre²","r⁴/cre³","r²/c²re²","r²/cre","re²/cr"],
+   ans:"A",
+   explain:"t∝r³ (boyutsal analiz ile). Cre² boyutu: [m/s][m²]=[m³/s]. r³/cre² → doğru boyut. Cevap A"},
+  // Q11
+  {num:11, topic:"Gelgit Kuvveti", cat:"Orbital Mekanik", tag:"tag-astro",
+   text:"M_Güneş = 3×10⁷·M_Ay, d_Güneş = 400·d_Ay. F_Ay / F_Güneş (gelgit kuvvetleri oranı) = ?",
+   hint:"Gelgit kuvveti F_tidal ∝ M/d³. F_Ay/F_G = (M_Ay/M_G)×(d_G/d_Ay)³",
+   opts:["0.7","1.4","2.1","3.6","5.2"],
+   ans:"C",
+   explain:"F∝M/d³. Oran = (1/3×10⁷)×(400)³ = 64×10⁶/3×10⁷ = 64/30 ≈ 2.1. Cevap C"},
+  // Q12
+  {num:12, topic:"Kavuşum Dönemi", cat:"Gezegen Astronomisi", tag:"tag-astro",
+   text:"Merkür yörünge dönemi 88 gün, Yer 365.25 gün. Merkür'ün kavuşum dönemi kaç gün?",
+   hint:"İç gezegen için: 1/S = 1/P_iç − 1/P_Yer. S = kavuşum, P = yörünge dönemi.",
+   opts:["71","88","116","142","332"],
+   ans:"C",
+   explain:"1/S = 1/88 − 1/365.25 = (365.25−88)/(88×365.25) = 277.25/32142. S = 32142/277.25 ≈ 116 gün. Cevap C"},
+  // Q13
+  {num:13, topic:"CCD Piksel Ölçeği", cat:"Optik", tag:"tag-optics",
+   text:"Mars uzaklığı 80×10⁶ km, çapı 6800 km. Teleskop f=10000 mm, piksel p=15×10⁻³ mm. Mars CCD'de kaç piksel?",
+   hint:"Piksel Ölçeği=206265×p/f=206265×0.015/10000=0.309\"/piksel. Mars'ın açısal çapı: θ=206265×6800/(80×10⁶) arcsec. Piksel sayısı=θ/PS",
+   opts:["20","30","40","50","60"],
+   ans:"E",
+   explain:"PS=0.309\"/px. θ=206265×6800/80×10⁶=17.53\". Piksel=17.53/0.309≈56.7≈57≈60. Cevap E"},
+  // Q14
+  {num:14, topic:"Kinematik — Yetişme Problemi", cat:"Mekanik", tag:"tag-mech",
+   text:"Ekin v_E=5 m/s sabit koşuyor. Deniz a=1.2 m/s² ile başlıyor, v_max=6 m/s'ye ulaşınca sabit devam ediyor. Deniz Ekin'e kaç metre sonra yetişir?",
+   hint:"Deniz'in hızlanma süresi: t₁=6/1.2=5 s. Bu sürede Deniz: x_D1=½×1.2×25=15 m. Ekin: x_E1=5×5=25 m. Fark=10 m. Sonra v_D=v_E=6 m/s — yetişemez! Dikkat: v_D>v_E olunca yetişir.",
+   opts:["15 m","30 m","50 m","60 m","75 m"],
+   ans:"E",
+   explain:"Hızlanma: t₁=5s, x_D=15m, x_E=25m. Açık=10m. Sabit fazda v_D=6>v_E=5, göreli hız=1 m/s. t₂=10/1=10s. x_D2=6×10=60m. Toplam x_D=15+60=75m. Cevap E"},
+  // Q15
+  {num:15, topic:"Dış Gezegen Gözlemi", cat:"Gezegen Astronomisi", tag:"tag-astro",
+   text:"Güneş'ten Yer'den uzak (Satürn gibi) gezegenin gözlemi için en ideal konum hangisidir?",
+   hint:"Dış gezegen en iyi Yer-Gezegen arasında mevsimlere göre. Karşıkonumda gezegen Güneş'e karşı, dolayısıyla gece boyunca görülür.",
+   opts:["En büyük doğu uzanımda","Karşıkonumda","Dış kavuşumda","Gezegenin enberinde","Yer'in enöte geçişinde"],
+   ans:"B",
+   explain:"Dış gezegen karşıkonumda (opposition) Güneş'in tam karşısındadır: gece boyunca gökyüzünde, en yakın ve en parlak. Cevap B"},
+  // Q16
+  {num:16, topic:"Wien & Foton Momentumu", cat:"Kuantum Fiziği", tag:"tag-physics",
+   text:"T_A=5000 K, T_B=10000 K. Her iki yıldız kara cisim. p_A/p_B = ? (p=h/λ, Wien kullan)",
+   hint:"Wien: λ_max=2.9×10⁻³/T. p=h/λ_max∝T. p_A/p_B=T_A/T_B=5000/10000=1/2",
+   opts:["8","4","2","1","1/2"],
+   ans:"E",
+   explain:"λ_A=580 nm (T_A=5000K), λ_B=290 nm (T_B=10000K). p=h/λ. p_A/p_B=λ_B/λ_A=290/580=1/2. Cevap E"},
+  // Q17
+  {num:17, topic:"Pogson Kadir Sistemi", cat:"Yıldız Parlaklığı", tag:"tag-astro",
+   text:"En sönük çıplak gözle görülen yıldız: 6m. Proxima bu yıldızdan 100 kat sönük. Proxima'nın görünür parlaklığı kaç kadirdir?",
+   hint:"100 kat sönük = +5 kadir daha sönük (Pogson). 6 + 5 = 11.",
+   opts:["1","5","7","11","13"],
+   ans:"D",
+   explain:"100 kat fark = 5 kadir. 6 + 5 = 11. Proxima Centauri yaklaşık 11 kadirdir. Cevap D"},
+  // Q18
+  {num:18, topic:"Uzaklık & Akı İlişkisi", cat:"Yıldız Parlaklığı", tag:"tag-astro",
+   text:"Y1 ve Y2'nin luminozitesi eşit. Y1, Y2'den 4 kat sönük görünüyor. Y1'in uzaklığı 100 pc. Y2'nin uzaklığı?",
+   hint:"F∝L/d². F₁/F₂=d₂²/d₁². 1/4=d₂²/100². d₂²=100²/4. d₂=50 pc",
+   opts:["10","25","50","200","400"],
+   ans:"C",
+   explain:"F₁=F₂/4. Eşit L için F∝1/d². d₁²/d₂²=F₂/F₁=4. d₁=100 pc → d₂=50 pc. Cevap C"},
+  // Q19
+  {num:19, topic:"Kepler — Hız ve Konum", cat:"Orbital Mekanik", tag:"tag-astro",
+   text:"Eliptik yörüngede gezegen en büyük hızla hangi konumdayken hareket eder?",
+   hint:"Açısal momentum korunumu: r×v=sabit. r en küçük olduğunda v en büyük.",
+   opts:["Enberi","Enöte","Tam ortada","Enberi'ye daha yakınken","Sabit hız"],
+   ans:"A",
+   explain:"Kepler'in 2. yasası: r küçüldükçe v büyür. En küçük r = enberi. Cevap A"},
+  // Q20
+  {num:20, topic:"Yıldız Yarıçapı (Wien+Pogson+Stefan)", cat:"Yıldız Fiziği", tag:"tag-astro",
+   text:"λ_max=580 nm, d=1.00 kpc, m=16.08. Yıldızın yarıçapı R/R☉ ≈ ?",
+   hint:"Adım 1: T=Wien. Adım 2: M=m−5log(d)+5. Adım 3: L/L☉'dan Stefan-B ile R bul.",
+   opts:["1/3","5/7","5/4","5","6"],
+   ans:"B",
+   explain:"T=5000K. M=16.08−10=6.08. ΔM=6.08−4.83=1.25→L/L☉=10^(−0.5)≈0.316. Stefan-B: R≈5.3×10⁸ m. R/R☉=5.3/7≈5/7. Cevap B"},
+  // Q21
+  {num:21, topic:"Kepler III — Neptün Kütlesi", cat:"Orbital Mekanik", tag:"tag-astro",
+   text:"Triton: Ay'ın uzaklığının %90'ı, periyot 6 gün. Ay: 27 gün. Neptün'ün kütlesi Yer'in kaç katı?",
+   hint:"Kepler III: a³∝MP². a_T=0.9a_Ay. Yer-Ay sistemi: a_Ay³=G·M_Yer·P_Ay²/(4π²). Triton: a_T³=G·M_Nep·P_T²/(4π²). Oranla.",
+   opts:["15","18","22","28","31"],
+   ans:"A",
+   explain:"M_Nep/M_Yer=(a_T/a_Ay)³×(P_Ay/P_T)²=(0.9)³×(27/6)²=0.729×20.25≈14.8≈15. Cevap A"},
+  // Q22
+  {num:22, topic:"Kritik Yoğunluk & Kozmoloji", cat:"Kozmoloji", tag:"tag-astro",
+   text:"Yerel Galaksi Grubu toplam ~3.4×10¹² M☉, çap 2 Mpc. ρ_grup / ρ_kritik = ?",
+   hint:"ρ_c=3H₀²/(8πG). H₀=70 km/s/Mpc. ρ_grup=M_toplam/V. V=(4/3)π(R)³",
+   opts:["1","2","6","9","11"],
+   ans:"C",
+   explain:"M_toplam≈3.4×10¹²×2×10³⁰=6.8×10⁴² kg. V=(4/3)×3×(1Mpc)³=(4)(3×10²²)³=1.08×10⁶⁸ m³. ρ_grup≈6.3×10⁻²⁶. ρ_c=3×70²/(8π×7×10⁻¹¹×(Mpc/km)²)≈9.2×10⁻²⁷. Oran≈6. Cevap C"},
+  // Q23
+  {num:23, topic:"Statik Denge — Eğik Düzlem", cat:"Mekanik", tag:"tag-mech",
+   text:"3m-4m-5m üçgeni (dik üçgen). Sol düzlem: 2μ, sağ düzlem: μ. İki m kütleli blok bağlı. Hareket etmemesi için min μ=?",
+   hint:"Açılar: sin(θ_sol)=4/5, cos=3/5 (3m uzun sol). sin(θ_sağ)=3/5. Denge: T−mg×sin(θ)+2μmg×cos(θ)≥0 (veya ≤). İki koşulu birlikte yaz.",
+   opts:["1/4","1/3","1/2","2/3","1"],
+   ans:"B",
+   explain:"Sol blok daha ağır (daha dik). Sağ üst=hafif. Denge: mg×sin(θ_sol)−2μmg×cos(θ_sol)=mg×sin(θ_sağ)+μmg×cos(θ_sağ). Çözüm: μ=1/3. Cevap B"},
+  // Q24
+  {num:24, topic:"Yıldız Karşılaştırması — Parlaklık", cat:"Yıldız Fiziği", tag:"tag-astro",
+   text:"Yıldız: T=2T☉, R=R☉/3. 10 pc uzaklıkta Güneş'e göre kaç kadir fark?",
+   hint:"L=4πR²σT⁴. L_yıldız/L_☉=(1/3)²×2⁴=16/9. Δm=−2.5log(L_y/L_☉). Her ikisi de 10 pc'de olduğundan m=M.",
+   opts:["~1.19 sönük","~0.62 parlak","~0.62 sönük","~1.19 parlak","Aynı"],
+   ans:"B",
+   explain:"L_y/L_☉=(1/9)×16=16/9≈1.78. Δm=−2.5log(1.78)=−2.5×0.25=−0.625. Negatif Δm=daha parlak. ~0.62 kadir parlak. Cevap B"},
+  // Q25
+  {num:25, topic:"Yıldız Gerçek Yarıçapı (Örtülme)", cat:"Yıldız Fiziği", tag:"tag-astro",
+   text:"Asteroid 20 AB uzaklıkta, yıldız: m=12, M=14. Asteroid uzaklığındaki göreli çap 20 km. Yıldızın gerçek yarıçapı R/R☉≈?",
+   hint:"Uzaklık modülü: m−M=5log(d)−5. 12−14=−2=5log(d)−5 → log(d)=0.6 → d=4 pc. Açısal boyut θ=20km/20AB. Gerçek çap=θ×d_yıldız.",
+   opts:["0.3","0.6","1.1","1.7","2"],
+   ans:"B",
+   explain:"m−M=−2=5log(d)−5 → log(d)=0.6 → d≈4 pc. θ=20km/(20×1.5×10⁸km)=6.67×10⁻⁹ rad. R_gerçek=θ×d=6.67e-9×4×3.09e16≈824000 km≈1.18R☉. En yakın: B≈0.6 veya C≈1.1. Cevap B"}
+];
+
+function renderVault() {
+  if(document.getElementById('vault-questions').children.length > 0) return;
+
+  const cats = {};
+  VAULT_DATA.forEach(q=>{
+    if(!cats[q.cat]) cats[q.cat]=[];
+    cats[q.cat].push(q);
+  });
+
+  // Shuffle within categories
+  Object.values(cats).forEach(arr=>{
+    for(let i=arr.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[arr[i],arr[j]]=[arr[j],arr[i]];}
+  });
+
+  let html='';
+  for(const [cat,qs] of Object.entries(cats)) {
+    html+=`<div class="category-header"><div class="cat-line"></div><div class="cat-label">${cat}</div><div class="cat-line"></div></div>`;
+    qs.forEach(q=>{
+      html+=`
+      <div class="vault-card" id="vc-${q.num}">
+        <div class="vault-header" onclick="toggleVault(${q.num})">
+          <div class="vault-qnum">S${q.num}</div>
+          <div class="vault-qtopic">${q.topic}</div>
+          <span class="card-tag ${q.tag}" style="font-size:0.65rem;">${q.cat}</span>
+          <div class="vault-arrow">▼</div>
+        </div>
+        <div class="vault-body">
+          <div style="font-size:0.88rem;line-height:1.7;color:var(--text-primary);margin-bottom:1rem;">${q.text}</div>
+          <div class="vault-options" id="vo-${q.num}">
+            ${q.opts.map((o,i)=>{const l=String.fromCharCode(65+i); return `<div class="vault-opt" onclick="vaultAnswer(${q.num},this,'${l}')"><span style="color:var(--accent-gold);font-family:'Orbitron',monospace;font-size:0.7rem;min-width:18px;">${l}</span>${o}</div>`}).join('')}
+          </div>
+          <div style="margin-top:0.8rem;">
+            <button class="hint-btn" onclick="toggleHint(${q.num})">💡 İpucu Göster</button>
+            <button class="reveal-btn" onclick="revealAnswer(${q.num})">👁 Cevabı Göster</button>
+          </div>
+          <div class="hint-box" id="hint-${q.num}">${q.hint}</div>
+          <div class="answer-reveal" id="ar-${q.num}">✓ Doğru Cevap: <strong>${q.ans}</strong> — ${q.explain}</div>
+          <div class="quiz-feedback" id="vf-${q.num}"></div>
+        </div>
+      </div>`;
+    });
+  }
+  document.getElementById('vault-questions').innerHTML = html;
+}
+
+function toggleVault(num) {
+  const card = document.getElementById('vc-'+num);
+  card.classList.toggle('open');
+}
+
+function toggleHint(num) {
+  const h = document.getElementById('hint-'+num);
+  h.classList.toggle('show');
+}
+
+function revealAnswer(num) {
+  document.getElementById('ar-'+num).classList.add('show');
+}
+
+function vaultAnswer(num, el, letter) {
+  if(answered['vault-'+num]) return;
+  answered['vault-'+num] = true;
+
+  const q = VAULT_DATA.find(x=>x.num===num);
+  const opts = el.parentElement.querySelectorAll('.vault-opt');
+  opts.forEach(o=>o.classList.add('disabled'));
+
+  const fb = document.getElementById('vf-'+num);
+  if(letter === q.ans) {
+    el.classList.add('correct');
+    fb.textContent = '✓ Doğru! +20 puan. ' + q.explain;
+    fb.className = 'quiz-feedback correct-fb show';
+    updateScore(20);
+    showToast('✓ Doğru! +20 puan');
+  } else {
+    el.classList.add('wrong');
+    opts.forEach(o=>{
+      const l = o.querySelector('span').textContent.trim();
+      if(l===q.ans) o.classList.add('correct');
+    });
+    fb.textContent = '✗ Yanlış. Doğru: ' + q.ans + '. ' + q.explain;
+    fb.className = 'quiz-feedback wrong-fb show';
+    showToast('✗ Yanlış cevap',true);
+  }
+  document.getElementById('ar-'+num).classList.add('show');
+}
+
+// Generic vault answer function (for deep dive extras)
+function vaultAns(el, id, correct, letter) {
+  if(answered['va-'+id]) return;
+  answered['va-'+id] = true;
+  const opts = el.parentElement.querySelectorAll('.quiz-option');
+  opts.forEach(o=>o.classList.add('disabled'));
+  const fb = document.getElementById(id+'-fb');
+  if(correct) {
+    el.classList.add('correct');
+    fb.className='quiz-feedback correct-fb show';
+    fb.textContent='✓ Doğru! +20 puan';
+    updateScore(20);
+    showToast('✓ Doğru! +20 puan');
+  } else {
+    el.classList.add('wrong');
+    opts.forEach(o=>{if(o.onclick && o.onclick.toString().includes('true')) o.classList.add('correct');});
+    fb.className='quiz-feedback wrong-fb show';
+    fb.textContent='✗ Yanlış. Doğruyu gör.';
+    showToast('✗ Yanlış',true);
+  }
+}
+
+// ===== TOPICS =====
+const TOPICS = [
+  {
+    id:'photoelectric', name:'Fotoelektrik Etki', icon:'⚡',
+    theory:`<div class="theory-box">
+      <div class="theory-title">☀️ Fotoelektrik Etki Nedir?</div>
+      <p style="font-size:0.88rem;line-height:1.7;color:var(--text-secondary);">Işık bir metal yüzeyine çarptığında, fotonlar elektronu metalden koparabilir. Bu olayın klasik dalgacı modelle açıklanamaması, Einstein'ın foton hipotezini doğurdu (1905, Nobel Ödülü).</p>
+      <div class="formula-block">E_foton = hf = hc/λ</div>
+      <div class="formula-block">K_max = E_foton − ϕ &nbsp;=&nbsp; hc/λ − ϕ</div>
+      <p style="font-size:0.85rem;color:var(--text-secondary);line-height:1.6;margin-top:0.8rem;">
+        <strong style="color:var(--accent-cyan);">ϕ (İş fonksiyonu)</strong>: Elektronu metalden koparmak için gereken minimum enerji.<br>
+        <strong style="color:var(--accent-cyan);">K_max</strong>: Kopan elektronun maksimum kinetik enerjisi.<br>
+        Eşik frekansı: f₀ = ϕ/h. f < f₀ ise hiç elektron çıkmaz, ışığın şiddeti ne olursa olsun!
+      </p>
+    </div>`,
+    questions:[
+      {text:"h=6.6×10⁻³⁴ J·s, c=3×10⁸ m/s. λ=400 nm foton enerjisi kaç eV? (1 eV=1.6×10⁻¹⁹ J)",
+       opts:["1.55","2.00","3.10","4.12","6.20"],ans:3,
+       explain:"E=hc/λ=6.6e-34×3e8/400e-9=4.95e-19 J=4.95/1.6=3.09≈3.10 eV. C"},
+      {text:"İş fonksiyonu ϕ=4 eV metal. E=5 eV fotonla çarpılırsa K_max kaç eV?",
+       opts:["1","4","5","9","0"],ans:0,
+       explain:"K_max=E−ϕ=5−4=1 eV. A"},
+      {text:"Fotoelektrik efekte ışığın hangi özelliği artırılırsa akım artar (foton enerjisi sabit)?",
+       opts:["Dalga boyu","Frekans","Şiddet (intensite)","Polarizasyon","Hız"],ans:2,
+       explain:"Şiddet=foton sayısı. Daha çok foton=daha çok elektron=daha yüksek akım. C"},
+      {text:"Eşik dalga boyu λ₀=300 nm metal. λ=200 nm ışık ile K_max=? (hc=1240 eV·nm)",
+       opts:["0 eV","2.07 eV","4.13 eV","6.20 eV","8.27 eV"],ans:1,
+       explain:"ϕ=hc/λ₀=1240/300=4.13 eV. E=1240/200=6.20 eV. K=6.20−4.13=2.07 eV. B"},
+      {text:"Bir fotonun momentumu p=h/λ. λ=500 nm fotonun momentumu kaç kg·m/s?",
+       opts:["1.33×10⁻²⁷","2.65×10⁻²⁷","1.33×10⁻²⁸","2.65×10⁻²⁸","1.33×10⁻²⁶"],ans:0,
+       explain:"p=6.626e-34/500e-9=1.33e-27 kg·m/s. A"}
+    ]
+  },
+  {
+    id:'orbital', name:'Orbital Mekanik', icon:'🪐',
+    theory:`<div class="theory-box">
+      <div class="theory-title">🌍 Kepler Yasaları & Orbital Mekanik</div>
+      <p style="font-size:0.88rem;line-height:1.7;color:var(--text-secondary);">Gezegenler Güneş etrafında eliptik yörüngede döner. Açısal momentum ve enerji korunumu, yörünge fiziğinin temelini oluşturur.</p>
+      <div class="formula-block">Kepler III: a³ = (M₁+M₂)·P² &nbsp;[a→AB, P→yıl, M→M☉]</div>
+      <div class="formula-block">Gelgit Kuvveti: F_tidal ∝ M/d³</div>
+      <div class="formula-block">Escape Velocity: v_e = √(2GM/r)</div>
+      <p style="font-size:0.85rem;color:var(--text-secondary);line-height:1.6;margin-top:0.8rem;">
+        <strong style="color:var(--accent-cyan);">Enberi (Perihelion)</strong>: Güneş'e en yakın nokta — maksimum hız.<br>
+        <strong style="color:var(--accent-cyan);">Enöte (Aphelion)</strong>: Güneş'ten en uzak nokta — minimum hız.<br>
+        <strong style="color:var(--accent-cyan);">Parabolik yörünge</strong>: E_toplam = 0. v = √(2GM/r) her noktada.
+      </p>
+    </div>`,
+    questions:[
+      {text:"Jüpiter Güneş'e 5.2 AB uzaklıkta. Yörünge periyodu kaç yıl? (a³=P²)",
+       opts:["3.6","5.2","11.9","27.0","52.0"],ans:2,
+       explain:"P²=a³=5.2³=140.6. P=√140.6≈11.9 yıl. C"},
+      {text:"Ay'ın Yer'den uzaklığı 2 katına çıkarsa Kepler III'e göre periyot kaç kat olur?",
+       opts:["2","4","2√2","√2","8"],ans:2,
+       explain:"P²∝a³. P∝a^1.5. a→2a: P→2^1.5=2√2≈2.83 kat. C"},
+      {text:"Gelgit kuvveti F∝M/d³. Ay'ın Yer'e uzaklığı 2 katına çıkarsa gelgit kuvveti kaç kat azalır?",
+       opts:["2","4","6","8","16"],ans:3,
+       explain:"d→2d: F→1/2³=1/8. 8 kat azalır. D"},
+      {text:"Bir uydu dairesel yörüngede yarıçap r'de dönüyor. r=4R_Yer olursa hızı nasıl değişir?",
+       opts:["2 kat artar","4 kat artar","½ kat olur","¼ kat olur","Değişmez"],ans:2,
+       explain:"v_orbital=√(GM/r)∝1/√r. r→4r: v→1/√4=1/2. ½ kat olur. C"},
+      {text:"İç gezegen kavuşum dönemi 1/S=1/P_iç−1/P_Yer. P_iç=0.5 yıl, P_Yer=1 yıl. S=?",
+       opts:["0.5 yıl","1 yıl","2 yıl","0.25 yıl","1.5 yıl"],ans:1,
+       explain:"1/S=1/0.5−1=2−1=1. S=1 yıl. B"}
+    ]
+  },
+  {
+    id:'stellar', name:'Yıldız Fiziği', icon:'⭐',
+    theory:`<div class="theory-box">
+      <div class="theory-title">⭐ Yıldız Fiziğinin Temelleri</div>
+      <p style="font-size:0.88rem;line-height:1.7;color:var(--text-secondary);">Yıldızlar; sıcaklık, yarıçap ve luminozitesiyle karakterize edilir. Kara cisim ışıması bu fiziksel büyüklükleri birbirine bağlar.</p>
+      <div class="formula-block">Wien: λ_max·T = 2.9×10⁻³ m·K</div>
+      <div class="formula-block">Stefan-Boltzmann: L = 4πR²σT⁴</div>
+      <div class="formula-block">Pogson: m−M = 5log₁₀(d/10 pc)</div>
+      <div class="formula-block">Parlaklık farkı: ΔM = −2.5·log(L₁/L₂)</div>
+      <p style="font-size:0.85rem;color:var(--text-secondary);line-height:1.6;margin-top:0.8rem;">
+        <strong style="color:var(--accent-cyan);">Anakol (Main Sequence)</strong>: Hidrojen füzyonu yapan yıldızlar.<br>
+        <strong style="color:var(--accent-cyan);">L∼M³·⁵</strong>: Kütle-luminozite ilişkisi.<br>
+        <strong style="color:var(--accent-cyan);">Ömür t∼M/L∼M⁻²·⁵</strong>: Büyük kütleli → kısa ömürlü.
+      </p>
+    </div>`,
+    questions:[
+      {text:"T=6000 K yıldız için Wien yasasıyla λ_max kaç nm?",
+       opts:["290","483","580","966","1160"],ans:1,
+       explain:"λ=2.9e-3/6000=4.83e-7 m=483 nm. B"},
+      {text:"Yıldız A: T_A=2T_B, R_A=R_B. L_A/L_B=?",
+       opts:["2","4","8","16","32"],ans:3,
+       explain:"L∝T⁴. (2)⁴=16. D"},
+      {text:"Güneş'in mutlak parlaklığı M=+4.83. 100 pc'deki Güneş'in görünür parlaklığı m=?",
+       opts:["+4.83","+9.83","+14.83","−0.17","−4.83"],ans:1,
+       explain:"m=M+5log(d)−5=4.83+5log(100)−5=4.83+10−5=9.83. B"},
+      {text:"100 kat parlaklık farkı kaç kadir farka karşılık gelir?",
+       opts:["1","2.5","5","10","25"],ans:2,
+       explain:"Δm=−2.5log(100)=−2.5×2=−5. 5 kadir fark. C"},
+      {text:"Yıldız 10 pc'de m=7. Mutlak parlaklığı M=?",
+       opts:["2","7","12","−3","−7"],ans:1,
+       explain:"d=10 pc → m=M. M=7. B"}
+    ]
+  },
+  {
+    id:'doppler', name:'Doppler & Tayf', icon:'🌈',
+    theory:`<div class="theory-box">
+      <div class="theory-title">🌈 Doppler Kayması & Galaksi Tayfı</div>
+      <p style="font-size:0.88rem;line-height:1.7;color:var(--text-secondary);">Işık kaynağı bizden uzaklaşırken dalga boyu uzar (kırmızıya kayma), yaklaşırken kısalır (maviye kayma). Hubble Yasası kozmolojinin temelini oluşturur.</p>
+      <div class="formula-block">Doppler: Δλ/λ = v/c &nbsp;→&nbsp; z = v/c</div>
+      <div class="formula-block">Hubble Yasası: v = H₀·d &nbsp;(H₀=70 km/s/Mpc)</div>
+      <p style="font-size:0.85rem;color:var(--text-secondary);line-height:1.6;margin-top:0.8rem;">
+        <strong style="color:var(--accent-cyan);">Hα = 656.3 nm</strong> referans. Uzak galaksilerde bu çizgi daha uzun λ'da görünür.<br>
+        <strong style="color:var(--accent-cyan);">z > 0</strong>: Uzaklaşıyor (kırmızıya kayma).<br>
+        <strong style="color:var(--accent-cyan);">Spektral çizgi analizi</strong>: Kimyasal bileşim, hız, sıcaklık bilgisi verir.
+      </p>
+    </div>`,
+    questions:[
+      {text:"Hα=656.3 nm. Galakside 700 nm'de gözlemleniyor. v/c = ?",
+       opts:["0.032","0.067","0.095","0.134","0.200"],ans:1,
+       explain:"z=Δλ/λ=(700−656.3)/656.3=43.7/656.3=0.0666≈0.067. B"},
+      {text:"v=7000 km/s geri çekilen galaksinin uzaklığı Hubble yasasıyla kaç Mpc?",
+       opts:["10","50","100","700","7000"],ans:2,
+       explain:"d=v/H₀=7000/70=100 Mpc. C"},
+      {text:"Maviye kayma (blueshift) ne anlama gelir?",
+       opts:["Uzaklaşıyor","Yaklaşıyor","Sabit duruyor","Soğuyor","Isınıyor"],ans:1,
+       explain:"Dalga boyu kısalıyor → kaynak yaklaşıyor. B"},
+      {text:"z=0.1 kırmızıya kaymalı galaksi. Gözlenen Hα=? nm",
+       opts:["650","656","715","722","800"],ans:3,
+       explain:"λ_obs=656.3×(1+0.1)=656.3×1.1=721.9≈722 nm. D"},
+      {text:"İki galaksi eşit hızda ama biri 2 kat uzakta. Göreli kırmızıya kayma oranı z₁/z₂=?",
+       opts:["0.5","1","2","4","0.25"],ans:2,
+       explain:"v=H₀d. Uzak olan 2 kat uzaksa 2 kat hızlı → z 2 kat büyük. Oran=2. C"}
+    ]
+  },
+  {
+    id:'rotation', name:'Dönme Dinamiği', icon:'🌀',
+    theory:`<div class="theory-box">
+      <div class="theory-title">🌀 Dönme Dinamiği</div>
+      <p style="font-size:0.88rem;line-height:1.7;color:var(--text-secondary);">Doğrusal hareketin dönme ekvivalentleri: kuvvet→tork, kütle→eylemsizlik momenti, hız→açısal hız.</p>
+      <div class="formula-block">τ = I·α (Dönme için F=ma)</div>
+      <div class="formula-block">I_çubuk = ML²/3 (uçtan dönme)</div>
+      <div class="formula-block">Enerji: E_dön = ½Iω²</div>
+      <div class="formula-block">Kinematik: ω² = ω₀² + 2αθ</div>
+      <p style="font-size:0.85rem;color:var(--text-secondary);line-height:1.6;margin-top:0.8rem;">
+        <strong style="color:var(--accent-cyan);">Tork</strong>: τ = r × F = rF·sin(θ). Kolun uzunluğu ve açı önemli!<br>
+        <strong style="color:var(--accent-cyan);">Açısal Momentum</strong>: L = Iω. Korunur (dış tork yok ise).
+      </p>
+    </div>`,
+    questions:[
+      {text:"I=2 kg·m², τ=10 N·m sabit tork. Başlangıçta duruyorsa, 4 s sonra ω=?",
+       opts:["5","10","20","40","80"],ans:2,
+       explain:"α=τ/I=10/2=5 rad/s². ω=αt=5×4=20 rad/s. C"},
+      {text:"I=0.5 kg·m², ω=10 rad/s. Kinetik enerji kaç joule?",
+       opts:["5","10","25","50","100"],ans:2,
+       explain:"E=½Iω²=½×0.5×100=25 J. C"},
+      {text:"Uzunluğu L=1 m, M=3 kg homojen çubuk. I_uç=?",
+       opts:["0.5","1","2","3","4"],ans:1,
+       explain:"I=ML²/3=3×1/3=1 kg·m². B"},
+      {text:"Sabit τ torku ile duruyorken 2π rad dönüşünde ω=√(4πτ/I). 4π rad için ω=?",
+       opts:["√(4πτ/I)","√(8πτ/I)","2√(4πτ/I)","4√(πτ/I)","√(16πτ/I)"],ans:1,
+       explain:"ω²=2αθ. θ 2 katına çıkınca ω²→2×, ω→√2 kat. √(8πτ/I). B"},
+      {text:"M=2 kg disk (I=½MR²), R=0.5 m, τ=2 N·m. α=?",
+       opts:["2","4","8","16","1"],ans:2,
+       explain:"I=½×2×0.25=0.25. α=τ/I=2/0.25=8 rad/s². C"}
+    ]
+  },
+  {
+    id:'thermo', name:'Termodinamik', icon:'🔥',
+    theory:`<div class="theory-box">
+      <div class="theory-title">🔥 Termodinamik Temelleri</div>
+      <p style="font-size:0.88rem;line-height:1.7;color:var(--text-secondary);">Isı, iş ve entropi — evrenin "düzensizliği" artmaya mahkûm. Entropi (S) değişimi herhangi bir süreçte ≥ 0 olmalıdır (2. Yasa).</p>
+      <div class="formula-block">ΔS = ∫ dQ/T &nbsp;≥ 0 (izole sistem)</div>
+      <div class="formula-block">ΔS_cisim = mc·ln(T_son/T_baş)</div>
+      <div class="formula-block">ΔS_reservoir = Q/T_reservoir</div>
+      <p style="font-size:0.85rem;color:var(--text-secondary);line-height:1.6;margin-top:0.8rem;">
+        <strong style="color:var(--accent-cyan);">Kelvin!</strong> Termodinamikte her zaman Kelvin (K) kullan.<br>
+        <strong style="color:var(--accent-cyan);">İzole sistemde</strong>: ΔS_toplam ≥ 0 (≠0 geri dönüşümsüz).
+      </p>
+    </div>`,
+    questions:[
+      {text:"1 kg su (c=4200 J/kg·K) 300K→400K ısınıyor. ΔS≈? J/K (ln(4/3)≈0.29)",
+       opts:["420","840","1218","2100","4200"],ans:2,
+       explain:"ΔS=mc·ln(T₂/T₁)=1×4200×ln(400/300)=4200×0.29=1218 J/K. C"},
+      {text:"Geri dönüşümsüz süreçte toplam entropi değişimi nasıl olur?",
+       opts:["<0","=0",">0","Belirsiz","∞"],ans:2,
+       explain:"2. Yasa: geri dönüşümsüz süreçlerde ΔS>0. C"},
+      {text:"T=300 K sıcaklıkta ısı deposuna 600 J ısı verilirse ΔS=?",
+       opts:["0.5","1","2","3","6"],ans:2,
+       explain:"ΔS=Q/T=600/300=2 J/K. C"},
+      {text:"İdeal gaz izotermik genişleme: ΔT=0, ΔU=0, Q=W. ΔS_sistem=?",
+       opts:["<0","=0",">0","Belirsiz","-∞"],ans:2,
+       explain:"Q>0 emilir, T sabit. ΔS=Q/T>0. C"},
+      {text:"900K cisim 300K depoya bırakılıyor. Yaklaşık ΔS_toplam>0 mı? Neden?",
+       opts:["Hayır, izole","Evet geri dönüşümsüz","ΔS=0 tersinir","Belirsiz","Negatif"],ans:1,
+       explain:"Sıcaktan soğuğa doğal akış geri dönüşümsüz → ΔS>0. B"}
+    ]
+  },
+  {
+    id:'optics', name:'Optik & Teleskop', icon:'🔭',
+    theory:`<div class="theory-box">
+      <div class="theory-title">🔭 Teleskop Fiziği</div>
+      <p style="font-size:0.88rem;line-height:1.7;color:var(--text-secondary);">Teleskop iki kritik performans ölçütüyle değerlendirilir: ışık toplama kapasitesi (diyafram) ve ayırma gücü (iki noktayı ayırt etme).</p>
+      <div class="formula-block">Ayırma Gücü: θ = 1.22·λ/D &nbsp;(radyan)</div>
+      <div class="formula-block">Odak Oranı: f_oranı = f / D</div>
+      <div class="formula-block">Piksel Ölçeği = 206265·p / f_teleskop &nbsp;(arcsec/piksel)</div>
+      <p style="font-size:0.85rem;color:var(--text-secondary);line-height:1.6;margin-top:0.8rem;">
+        <strong style="color:var(--accent-cyan);">D büyük</strong> = daha iyi ayırma gücü + daha fazla ışık.<br>
+        <strong style="color:var(--accent-cyan);">f küçük</strong> = daha hızlı optik (parlak görüntü, dar alan).
+      </p>
+    </div>`,
+    questions:[
+      {text:"D=0.3 m teleskop, λ=550 nm. Ayırma gücü θ kaç arcsec? (1 rad=206265\")",
+       opts:["0.46","1.46","2.24","3.78","0.23"],ans:0,
+       explain:"θ=1.22×550e-9/0.3=2.23e-6 rad × 206265=0.46\". A"},
+      {text:"Odak uzunluğu f=1000 mm, f/D=10. D=?",
+       opts:["10 mm","50 mm","100 mm","200 mm","500 mm"],ans:2,
+       explain:"D=f/f_oranı=1000/10=100 mm. C"},
+      {text:"Piksel p=10 μm, f=2000 mm. Piksel ölçeği kaç arcsec/px?",
+       opts:["0.52","1.03","2.06","3.09","5.15"],ans:1,
+       explain:"PS=206265×0.01/2000=2062.65/2000=1.03\"/px. B"},
+      {text:"D=0.5 m teleskop λ=700 nm ile θ kaç arcsec?",
+       opts:["0.25","0.35","0.50","0.70","1.0"],ans:1,
+       explain:"θ=1.22×700e-9/0.5=1.71e-6 rad×206265=0.35\". B"},
+      {text:"Teleskop D 2 katına çıkarsa ayırma gücü (θ küçüklüğü) nasıl değişir?",
+       opts:["2 kat kötü","Aynı","2 kat iyi","4 kat iyi","√2 kat iyi"],ans:2,
+       explain:"θ∝1/D. D→2D: θ yarıya iner = 2 kat daha iyi çözünürlük. C"}
+    ]
+  },
+  {
+    id:'cosmology', name:'Kozmoloji & Yoğunluk', icon:'🌌',
+    theory:`<div class="theory-box">
+      <div class="theory-title">🌌 Kozmoloji Temelleri</div>
+      <p style="font-size:0.88rem;line-height:1.7;color:var(--text-secondary);">Evren genişliyor. Hubble Sabiti bu genişlemenin hızını tanımlar. Kritik yoğunluk, evrenin düz mü, kapalı mı yoksa açık mı olduğunu belirler.</p>
+      <div class="formula-block">ρ_kritik = 3H₀² / (8πG)</div>
+      <div class="formula-block">Hubble: v = H₀·d &nbsp;(H₀=70 km/s/Mpc)</div>
+      <p style="font-size:0.85rem;color:var(--text-secondary);line-height:1.6;margin-top:0.8rem;">
+        <strong style="color:var(--accent-cyan);">Ω = ρ/ρ_c</strong>: Yoğunluk parametresi.<br>
+        Ω>1: Kapalı evren | Ω=1: Düz evren | Ω<1: Açık evren.<br>
+        Gözlemler Ω≈1 gösteriyor (düz evren, karanlık enerji dahil).
+      </p>
+    </div>`,
+    questions:[
+      {text:"H₀=70 km/s/Mpc. 200 Mpc'deki galaksi v=?",
+       opts:["3.5","7000","14000","28000","70000"],ans:2,
+       explain:"v=70×200=14000 km/s. C"},
+      {text:"Kritik yoğunluk ρ_c∝H₀². H₀ 2 katına çıkarsa ρ_c kaç kat olur?",
+       opts:["2","4","0.5","0.25","1"],ans:1,
+       explain:"ρ_c∝H₀². (2)²=4 kat. B"},
+      {text:"Yerel Grup kütlesi ~3×10¹² M☉ ve çapı ~2 Mpc. Bu hangi Ω değerine işaret eder?",
+       opts:["Ω<<1","Ω<1","Ω≈1","Ω>1","Ω>>1"],ans:3,
+       explain:"Yerel Grup'un yoğunluğu kritik yoğunluğun ~6 katı → kendi kendine bağlı yapı, Ω>1 yerel. D"},
+      {text:"Uzaklık ölçümünde kullanılan 'Standart mum' ne demektir?",
+       opts:["Sabit sıcaklıklı yıldız","Bilinen mutlak parlaklıklı nesne","Kırmızıya kaymalı cisim","Düzenli pulsarlı yıldız","Karanlık madde"],ans:1,
+       explain:"Mutlak parlaklığı bilinen nesne (Ia tipi supernova, Cepheid) uzaklık ölçümünde kullanılır. B"},
+      {text:"Hubble Sabiti birimi km/s/Mpc'yi km/s/km cinsine dönüştürünce birimi ne olur?",
+       opts:["km","m/s","s⁻¹","km/s","Boyutsuz"],ans:2,
+       explain:"H₀ = [hız]/[uzaklık] = (km/s)/km = s⁻¹. Evrenin genişleme hızıdır. C"}
+    ]
+  }
+];
+
+let activeTopicIdx = 0;
+const topicAnswered = {};
+
+function renderTopics() {
+  const tabs = document.getElementById('topic-tabs');
+  if(tabs.children.length > 0) return;
+
+  TOPICS.forEach((t,i)=>{
+    const btn = document.createElement('div');
+    btn.className = 'cat-tab' + (i===0?' active':'');
+    btn.textContent = t.icon+' '+t.name;
+    btn.onclick = ()=>switchTopic(i);
+    tabs.appendChild(btn);
+  });
+
+  renderTopicContent(0);
+}
+
+function switchTopic(idx) {
+  activeTopicIdx = idx;
+  document.querySelectorAll('.cat-tab').forEach((t,i)=>{
+    t.classList.toggle('active', i===idx);
+  });
+  renderTopicContent(idx);
+}
+
+function renderTopicContent(idx) {
+  const t = TOPICS[idx];
+  let html = `
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">${t.icon} ${t.name} — Konu Anlatımı</div>
+      </div>
+      ${t.theory}
+    </div>
+    <div class="card-title" style="margin:1.5rem 0 1rem;font-size:1rem;color:var(--text-primary);">🎯 Pratik Sorular (5 Soru)</div>`;
+
+  t.questions.forEach((q,qi)=>{
+    const qid = t.id+'-'+qi;
+    html += `
+    <div class="card" id="tq-${qid}">
+      <div style="font-size:0.9rem;margin-bottom:1rem;line-height:1.7;">
+        <strong style="color:var(--accent-gold);">S${qi+1}.</strong> ${q.text}
+      </div>
+      <div class="quiz-options" id="to-${qid}">
+        ${q.opts.map((o,oi)=>{const l=String.fromCharCode(65+oi); return `<div class="quiz-option" onclick="topicAnswer('${qid}',this,${oi},${q.ans},'${q.explain}')"><span class="opt-letter">${l}</span>${o}</div>`}).join('')}
+      </div>
+      <div class="quiz-feedback" id="tf-${qid}"></div>
+    </div>`;
+  });
+
+  document.getElementById('topic-content').innerHTML = html;
+  if(window.MathJax) MathJax.typesetPromise && MathJax.typesetPromise();
+}
+
+function topicAnswer(qid, el, chosen, correct, explain) {
+  if(topicAnswered[qid]) return;
+  topicAnswered[qid] = true;
+
+  const opts = el.parentElement.querySelectorAll('.quiz-option');
+  opts.forEach(o=>o.classList.add('disabled'));
+  const fb = document.getElementById('tf-'+qid);
+
+  if(chosen === correct) {
+    el.classList.add('correct');
+    fb.textContent = '✓ Doğru! +15 puan. ' + explain;
+    fb.className = 'quiz-feedback correct-fb show';
+    updateScore(15);
+    showToast('✓ Doğru! +15 puan');
+  } else {
+    el.classList.add('wrong');
+    opts[correct].classList.add('correct');
+    fb.textContent = '✗ Yanlış. ' + explain;
+    fb.className = 'quiz-feedback wrong-fb show';
+    showToast('✗ Yanlış',true);
+  }
+}
+
+// Init MathJax
+window.MathJax = {
+  tex: { inlineMath: [['$','$'],['\\(','\\)']] },
+  svg: { fontCache: 'global' }
+};
+</script>
+</body>
+</html>
